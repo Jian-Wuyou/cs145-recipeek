@@ -1,15 +1,15 @@
 <!-- YOU CAN DELETE EVERYTHING IN THIS PAGE -->
+<script lang="ts">
+    import { NavBar } from '$lib/components';
+</script>
 
-<div class="container h-full mx-auto flex justify-center items-center">
-	<div class="space-y-5">
-		<h1 class="h1">Let's get cracking bones!</h1>
-		<p>Start by exploring:</p>
-		<ul>
-			<li><code class="code">/src/routes/+layout.svelte</code> - barebones layout</li>
-			<li><code class="code">/src/app.postcss</code> - app wide css</li>
-			<li>
-				<code class="code">/src/routes/+page.svelte</code> - this page, you can replace the contents
-			</li>
-		</ul>
-	</div>
+<div class="flex h-full flex-wrap">
+    <div class="h-min basis-full"><NavBar /></div>
+    <div class="container mx-auto grow items-center justify-center">
+        <div class="space-y-5 text-center">
+            <h1 class="h1">ReciPeek</h1>
+            <h3 class="h3">No More 'What's for Dinner?' - Find Recipes Fast!</h3>
+            <a class="variant-filled-secondary btn" href="/auth/register">Get started!</a>
+        </div>
+    </div>
 </div>
