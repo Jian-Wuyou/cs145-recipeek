@@ -2,12 +2,19 @@
     import { AppBar } from '@skeletonlabs/skeleton';
     import { Fire } from '@steeze-ui/heroicons';
     import { Icon } from '@steeze-ui/svelte-icon';
+    import { session } from '$lib/store/session';
+
+    $: url = $session.loggedIn ? '/user/dashboard' : '/';
 </script>
 
-<AppBar>
+<AppBar shadow="shadow-2xl">
     <svelte:fragment slot="lead">
-        <Icon class="w-8 stroke-2" src={Fire} />
+        <a href={url}>
+            <div class="flex w-auto items-center gap-2">
+                <Icon class="w-8 stroke-2" src={Fire} />
+                <span class="text-2xl font-semibold">ReciPeek</span>
+            </div>
+        </a>
     </svelte:fragment>
-    <span class="text-2xl font-semibold">ReciPeek</span>
-    <slot slot="trail"/>
+    <slot slot="trail" />
 </AppBar>

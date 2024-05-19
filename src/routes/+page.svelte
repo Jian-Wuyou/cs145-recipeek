@@ -4,7 +4,11 @@
 </script>
 
 <div class="flex h-full flex-wrap">
-    <div class="h-min basis-full"><NavBar /></div>
+    <div class="h-min basis-full">
+        <NavBar>
+            <a href="/auth/login"><button class="variant-filled btn flex w-32 text-center">Login</button></a>
+        </NavBar>
+    </div>
     <div class="container mx-auto grow items-center justify-center">
         <div class="space-y-5 text-center">
             <h1 class="h1">ReciPeek</h1>
