@@ -46,7 +46,7 @@
             </div>
         </NavBar>
     </div>
-    <div class="container mx-auto grow">
+    <div class="container mx-auto h-full grow">
         <slot />
     </div>
 </div>
