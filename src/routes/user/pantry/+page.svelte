@@ -1,16 +1,44 @@
 <script lang="ts">
     import { type Output, array, minValue, number, object, string } from 'valibot';
     import { ingredients, ingredientsCategory } from '$lib/data/ingredients';
-    import { InputChip } from '@skeletonlabs/skeleton';
+    import {
+        InputChip,
+        Autocomplete,
+        type AutocompleteOption,
+        popup,
+        type PopupSettings,
+    } from '@skeletonlabs/skeleton';
 
+    // Setup filter chips
     let filters: string[] = [];
+    let filterInput = '';
+    let filterChip: InputChip;
 
+    // Setup popup autocomplete
+    let categoryOptions = ingredientsCategory.map(v => ({
+        label: v,
+        value: v,
+    }));
+
+    let popupSettings: PopupSettings = {
+        event: 'focus-click',
+        target: 'popupAutocomplete',
+        placement: 'bottom',
+    };
+
+    const onInputChipSelect = (event: CustomEvent<AutocompleteOption<string>>) => {
+        filterChip.addChip(event.detail.value);
+    };
+
+    // Stock
     const StockEntry = object({
         category: array(string()),
         available: number([minValue(0)]),
     });
 
     let stock: { [name: string]: Output<typeof StockEntry> } = {};
+
+    // Create dummy stock data
     let count = 20;
     for (const [key, value] of Object.entries(ingredients)) {
         stock[key] = {
@@ -20,27 +48,42 @@
         count += 20;
     }
 
-    let filtered: typeof stock = stock;
+    // Change displayed data whenever filters change
+    let filtered = stock;
 
     $: {
         if (filters.length == 0) {
             filtered = stock;
         } else {
-            const filteredKeys = Object.keys(stock).filter(name => {
-                return stock[name].category.some(v => filters.includes(v));
-            });
             filtered = {};
-            filteredKeys.forEach(key => {
-                filtered[key] = stock[key];
-            });
+            for (const [key, value] of Object.entries(stock)) {
+                if (value.category.some(v => filters.includes(v))) filtered[key] = value;
+            }
         }
     }
 </script>
 
 <div class="p-12">
-    <InputChip bind:value={filters} name="chips" placeholder="Enter any value..." whitelist={ingredientsCategory} />
+    <span use:popup={popupSettings}>
+        <InputChip
+            bind:input={filterInput}
+            bind:value={filters}
+            name="chips"
+            whitelist={ingredientsCategory}
+            bind:this={filterChip}
+        />
+    </span>
+    <div data-popup="popupAutocomplete">
+        <div class="card max-h-48 w-full max-w-sm overflow-y-auto p-4" tabindex="-1">
+            <Autocomplete
+                bind:input={filterInput}
+                options={categoryOptions}
+                denylist={filters}
+                on:selection={onInputChipSelect}
+            />
+        </div>
+    </div>
     <div class="table-container">
-        <!-- Native Table Element -->
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -62,12 +105,6 @@
                     </tr>
                 {/each}
             </tbody>
-            <!-- <tfoot>
-            <tr>
-				<th colspan="3">Calculated Total Weight</th>
-				<td>{totalWeight}</td>
-			</tr>
-        </tfoot> -->
         </table>
     </div>
 </div>
