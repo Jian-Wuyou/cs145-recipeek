@@ -2,7 +2,8 @@
     import { NavBar } from '$lib/components';
     import { signOutUser } from '$lib/firebase/auth';
     import { goto } from '$app/navigation';
-    import { UserCircle, ShoppingBag, BookOpen } from '@steeze-ui/heroicons';
+    import { UserCircle, ShoppingBag } from '@steeze-ui/heroicons';
+    import { BookText } from '@steeze-ui/lucide-icons';
     import { Icon } from '@steeze-ui/svelte-icon';
     import { session } from '$lib/store/session';
     import { type PopupSettings, popup } from '@skeletonlabs/skeleton';
@@ -23,7 +24,7 @@
     <div class="h-min basis-full">
         <NavBar>
             <a class="btn flex items-center gap-2 hover:variant-soft-primary" href="/user/recipes">
-                <span><Icon class="w-6 stroke-2" src={BookOpen} /></span>
+                <span><Icon class="w-6 stroke-2" src={BookText} /></span>
                 <span>Recipes</span>
             </a>
             <a class="btn flex items-center gap-2 hover:variant-soft-primary" href="/user/pantry">

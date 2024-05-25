@@ -10,6 +10,8 @@
         type PopupSettings,
     } from '@skeletonlabs/skeleton';
     import { onValue, ref } from 'firebase/database';
+    import { Trash2, PencilLine } from '@steeze-ui/lucide-icons';
+    import { Icon } from '@steeze-ui/svelte-icon';
     import { array, minValue, number, object, string, type Output } from 'valibot';
 
     // Setup filter chips
@@ -98,6 +100,7 @@
                     <th>Ingredient Name</th>
                     <th>Category</th>
                     <th>Available</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -110,6 +113,14 @@
                             {/each}
                         </td>
                         <td>{available}</td>
+                        <td>
+                            <button class="btn-icon bg-red-500">
+                                <Icon class="w-6 stroke-2" src={Trash2} />
+                            </button>
+                            <button class="btn-icon bg-green-500">
+                                <Icon class="w-6 stroke-2" src={PencilLine} />
+                            </button>
+                        </td>
                     </tr>
                 {/each}
             </tbody>
