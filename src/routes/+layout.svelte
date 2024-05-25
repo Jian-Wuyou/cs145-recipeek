@@ -1,9 +1,8 @@
 <script lang="ts">
-    import '../app.postcss';
-    import { Toast, initializeStores, modeCurrent, setModeCurrent } from '@skeletonlabs/skeleton';
+    import { arrow, autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom';
+    import { Modal, Toast, initializeStores, modeCurrent, setModeCurrent, storePopup } from '@skeletonlabs/skeleton';
     import { onMount } from 'svelte';
-    import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
-    import { storePopup } from '@skeletonlabs/skeleton';
+    import '../app.postcss';
 
     initializeStores();
     storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
@@ -14,4 +13,5 @@
 </script>
 
 <Toast position="t" />
+<Modal />
 <slot />

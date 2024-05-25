@@ -5,13 +5,15 @@
     import {
         Autocomplete,
         InputChip,
+        getModalStore,
         popup,
         type AutocompleteOption,
+        type ModalSettings,
         type PopupSettings,
     } from '@skeletonlabs/skeleton';
-    import { onValue, ref } from 'firebase/database';
-    import { Trash2, PencilLine } from '@steeze-ui/lucide-icons';
+    import { PencilLine, Trash2 } from '@steeze-ui/lucide-icons';
     import { Icon } from '@steeze-ui/svelte-icon';
+    import { child, onValue, ref, remove, update } from 'firebase/database';
     import { array, minValue, number, object, string, type Output } from 'valibot';
 
     // Setup filter chips
@@ -46,10 +48,11 @@
     const user = auth.currentUser;
     const inventoryRef = ref(db, `users/${user?.uid}/inventory`);
 
-    const inventoryPromise = onValue(inventoryRef, snapshot => {
+    onValue(inventoryRef, snapshot => {
         const snapshotData: Inventory = snapshot.exists() ? snapshot.val() : {};
         const snapshotStock: typeof stock = {};
         for (const [k, v] of Object.entries(snapshotData)) {
+            if (!ingredients.hasOwnProperty(k)) continue;
             snapshotStock[k] = {
                 category: ingredients[k],
                 available: v,
@@ -71,6 +74,30 @@
             }
         }
     }
+
+    const modalStore = getModalStore();
+
+    const modalDeleteItem = (itemName: string) => {
+        const modal: ModalSettings = {
+            type: 'confirm',
+            title: 'Delete item',
+            body: `Are you sure you wish to delete ${itemName}?`,
+            response: (r: boolean) => remove(child(inventoryRef, itemName)),
+        };
+        modalStore.trigger(modal);
+    };
+
+    const modalEditItem = (itemName: string) => {
+        const modal: ModalSettings = {
+            type: 'prompt',
+            title: 'Edit amount',
+            body: itemName,
+            value: stock[itemName].available,
+            valueAttr: { type: 'number', min: 0, required: true },
+            response: (r: number) => update(inventoryRef, { [itemName]: r }),
+        };
+        modalStore.trigger(modal);
+    };
 </script>
 
 <div class="p-12">
@@ -114,10 +141,10 @@
                         </td>
                         <td>{available}</td>
                         <td>
-                            <button class="btn-icon bg-red-500">
+                            <button class="btn-icon bg-red-500" on:click={() => modalDeleteItem(name)}>
                                 <Icon class="w-6 stroke-2" src={Trash2} />
                             </button>
-                            <button class="btn-icon bg-green-500">
+                            <button class="btn-icon bg-green-500" on:click={() => modalEditItem(name)}>
                                 <Icon class="w-6 stroke-2" src={PencilLine} />
                             </button>
                         </td>
