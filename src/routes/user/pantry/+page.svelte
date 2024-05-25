@@ -131,7 +131,7 @@
                 </tr>
             </thead>
             <tbody>
-                {#each Object.entries(filtered) as [name, { category, available }]}
+                {#each Object.entries(filtered) as [name, { category, available }] (name)}
                     <tr>
                         <td>{name}</td>
                         <td>
