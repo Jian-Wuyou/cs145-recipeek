@@ -7,3 +7,5 @@ export const Session = object({
     uid: nullish(string()),
 });
 export type Session = Output<typeof Session>;
+
+export type Inventory = { [name: string]: number };
