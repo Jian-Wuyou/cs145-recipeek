@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { AddItemForm } from '$lib/components/modals';
     import { ingredients, ingredientsCategory } from '$lib/data/ingredients';
     import { auth, db } from '$lib/firebase/firebase.client';
     import { type Inventory } from '$lib/models';
@@ -11,7 +12,7 @@
         type ModalSettings,
         type PopupSettings,
     } from '@skeletonlabs/skeleton';
-    import { PencilLine, Trash2 } from '@steeze-ui/lucide-icons';
+    import { PencilLine, Plus, Trash2 } from '@steeze-ui/lucide-icons';
     import { Icon } from '@steeze-ui/svelte-icon';
     import { child, onValue, ref, remove, update } from 'firebase/database';
     import { array, minValue, number, object, string, type Output } from 'valibot';
@@ -87,6 +88,20 @@
         modalStore.trigger(modal);
     };
 
+    const modalAddItem = () => {
+        const modal: ModalSettings = {
+            type: 'component',
+            component: { ref: AddItemForm },
+            title: 'Add item',
+            body: '',
+            response: (r: { itemName: string; amount: number }) => {
+                const oldAmount = stock.hasOwnProperty(r.itemName) ? stock[r.itemName].available : 0;
+                update(inventoryRef, { [r.itemName]: oldAmount + r.amount });
+            },
+        };
+        modalStore.trigger(modal);
+    };
+
     const modalEditItem = (itemName: string) => {
         const modal: ModalSettings = {
             type: 'prompt',
@@ -101,15 +116,27 @@
 </script>
 
 <div class="p-12">
-    <span use:popup={popupSettings}>
-        <InputChip
-            bind:input={filterInput}
-            bind:value={filters}
-            name="chips"
-            whitelist={ingredientsCategory}
-            bind:this={filterChip}
-        />
-    </span>
+    <div class="flex flex-wrap items-center">
+        <div class="grid w-full">
+            <button
+                class="mb-2 me-2 inline-flex items-center gap-2 justify-self-end rounded-lg bg-green-500 px-3 py-1.5 hover:bg-green-700"
+                on:click={modalAddItem}
+            >
+                <Icon class="w-5 stroke-2" src={Plus} />
+                <span>Add Item</span>
+            </button>
+        </div>
+        <span class="grow" use:popup={popupSettings}>
+            <InputChip
+                bind:input={filterInput}
+                bind:value={filters}
+                name="chips"
+                whitelist={ingredientsCategory}
+                bind:this={filterChip}
+                placeholder="Find category..."
+            />
+        </span>
+    </div>
     <div data-popup="popupAutocomplete">
         <div class="card max-h-48 w-full max-w-sm overflow-y-auto p-4" tabindex="-1">
             <Autocomplete
