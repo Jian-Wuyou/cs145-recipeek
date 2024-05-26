@@ -10,4 +10,5 @@ export type Session = Output<typeof Session>;
 
 export type Inventory = { [name: string]: number };
 
+export type Notification = { amount: number; time: Date; id: string };
 export type Subscriptions = { [id: string]: boolean };
