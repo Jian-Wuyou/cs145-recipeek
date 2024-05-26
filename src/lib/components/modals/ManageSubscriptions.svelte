@@ -4,13 +4,14 @@
     import { getModalStore } from '@skeletonlabs/skeleton';
     import { Check, Plus, Trash2, X } from '@steeze-ui/lucide-icons';
     import { Icon } from '@steeze-ui/svelte-icon';
-    import { onValue, ref, set } from 'firebase/database';
+    import { onValue, ref, set, child, remove } from 'firebase/database';
 
     const user = auth.currentUser;
     let subscriptions: Subscriptions = {};
-    const subscriptionsRef = ref(db, `users/${user?.uid}/subscriptions`);
+    const userSubsRef = ref(db, `users/${user?.uid}/subscriptions`);
+    const subsRef = ref(db, 'subscriptions');
 
-    onValue(subscriptionsRef, snapshot => {
+    onValue(userSubsRef, snapshot => {
         subscriptions = snapshot.exists() ? snapshot.val() : {};
     });
 
@@ -19,9 +20,14 @@
     function onSave() {
         let newSubscriptions = subscriptions;
         for (const [k, v] of Object.entries(subscriptions)) {
-            if (v === false) delete newSubscriptions[k];
+            if (v === false) {
+                remove(child(subsRef, `${k}/${user?.uid}`));
+                delete newSubscriptions[k];
+                continue;
+            }
+            set(child(subsRef, `${k}/${user?.uid}`), true);
         }
-        set(subscriptionsRef, newSubscriptions);
+        set(userSubsRef, newSubscriptions);
         modalStore.close();
     }
 
