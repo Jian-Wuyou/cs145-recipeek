@@ -1,21 +1,37 @@
-import { writable } from 'svelte/store';
+import { auth, db } from '$lib/firebase/firebase.client';
+import type { NotificationList } from '$lib/models';
+import { get as dbGet, onValue, ref, update } from 'firebase/database';
+import { get, writable } from 'svelte/store';
 
 const initStore = () => {
-    // initialize internal writable store with empty list
-    const { subscribe, set, update } = writable<string[]>([]);
+    const notificationsStore = writable<NotificationList>({});
+    const { subscribe } = notificationsStore;
 
-    // mark message as read by removing it from the list
-    const dismiss = (message: string) => update(messages => messages.filter(mess => mess !== message));
+    const user = auth.currentUser;
+    const notificationsRef = ref(db, `users/${user?.uid}/notifications`);
+    onValue(notificationsRef, snapshot => {
+        const snapshotData: NotificationList = snapshot.exists() ? snapshot.val() : {};
+        notificationsStore.set(snapshotData);
+    });
 
-    // add new message to the top of the list
-    const add = (message: string) => update(messages => [message, ...messages]);
+    const dismiss = (id: string) =>
+        notificationsStore.update(notifications => {
+            let { [id]: _, ...rest } = notifications;
+            return rest;
+        });
+
+    const confirm = async (id: string, itemName: string) => {
+        const itemRef = ref(db, `users/${user?.uid}/inventory/${itemName}`);
+        const dataSnapshot = await dbGet(itemRef);
+        const oldAmount = dataSnapshot.exists() ? dataSnapshot.val() : 0;
+        update(itemRef, oldAmount + get(notificationsStore)[id].amount);
+        dismiss(id);
+    };
 
     return {
         subscribe,
-        add,
-        init: set, // alias set method to init
         dismiss,
-        clear: () => set([]),
+        confirm,
     };
 };
 

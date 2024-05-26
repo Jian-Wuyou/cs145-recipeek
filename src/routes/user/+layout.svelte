@@ -7,6 +7,7 @@
     import { Icon } from '@steeze-ui/svelte-icon';
     import { session } from '$lib/store/session';
     import { type PopupSettings, popup } from '@skeletonlabs/skeleton';
+    import { notifications } from '$lib/store/notifications';
     function logout() {
         signOutUser().then(() => {
             goto('/');
@@ -16,6 +17,12 @@
     const popupProfile: PopupSettings = {
         event: 'click',
         target: 'profile',
+        placement: 'bottom',
+    };
+
+    const popupNotifs: PopupSettings = {
+        event: 'click',
+        target: 'notification',
         placement: 'bottom',
     };
 </script>
@@ -47,6 +54,22 @@
                                     Logout
                                 </button>
                             </li>
+                        </ul>
+                    </nav>
+                </div>
+            </svelte:fragment>
+            <svelte:fragment>
+                <button class="hover:text-surface-100" use:popup={popupNotifs}>
+                    <Icon class="w-6 stroke-2" src={Bell} />
+                    <!-- TODO: Add global notification store and popup under this -->
+                </button>
+                <div class="card h-fit w-48 p-3 shadow-xl" data-popup="notification">
+                    <div class="bg-surface-100-800-token" />
+                    <nav class="list-nav">
+                        <ul>
+                            {#each Object.entries($notifications) as [id, notif] (id)}
+                                Controller {notif.id}: {notif.amount} change on {new Date(notif.time)}
+                            {/each}
                         </ul>
                     </nav>
                 </div>

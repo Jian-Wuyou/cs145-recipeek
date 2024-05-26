@@ -11,5 +11,7 @@ export type Session = Output<typeof Session>;
 
 export type Inventory = { [name: string]: number };
 
-export type Notification = { amount: number; time: ReturnType<typeof serverTimestamp>; id: string };
+export type Notification = { amount: number; time: number; id: string };
+export type NotificationList = { [id: string]: Notification };
+
 export type Subscriptions = { [id: string]: boolean };
