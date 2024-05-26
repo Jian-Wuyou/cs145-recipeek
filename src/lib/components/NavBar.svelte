@@ -15,6 +15,11 @@
                 <span class="text-2xl font-semibold">ReciPeek</span>
             </div>
         </a>
+        <div class="mx-5 text-surface-500">|</div>
+        <slot name="lead" />
     </svelte:fragment>
-    <slot slot="trail" />
+    <svelte:fragment slot="trail">
+        <slot />
+        <slot name="trail" />
+    </svelte:fragment>
 </AppBar>

@@ -121,7 +121,7 @@
         </div>
     </div>
     <div class="table-container">
-        <table class="table table-hover">
+        <table class="table table-hover table-compact">
             <thead>
                 <tr>
                     <th>Ingredient Name</th>
@@ -141,11 +141,17 @@
                         </td>
                         <td>{available}</td>
                         <td>
-                            <button class="btn-icon bg-red-500" on:click={() => modalDeleteItem(name)}>
-                                <Icon class="w-6 stroke-2" src={Trash2} />
+                            <button
+                                class="rounded-lg bg-green-500 p-1.5 hover:bg-green-700"
+                                on:click={() => modalEditItem(name)}
+                            >
+                                <Icon class="w-5 stroke-2" src={PencilLine} />
                             </button>
-                            <button class="btn-icon bg-green-500" on:click={() => modalEditItem(name)}>
-                                <Icon class="w-6 stroke-2" src={PencilLine} />
+                            <button
+                                class="rounded-lg bg-red-500 p-1.5 hover:bg-red-700"
+                                on:click={() => modalDeleteItem(name)}
+                            >
+                                <Icon class="w-5 stroke-2" src={Trash2} />
                             </button>
                         </td>
                     </tr>
