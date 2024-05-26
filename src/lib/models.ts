@@ -9,3 +9,5 @@ export const Session = object({
 export type Session = Output<typeof Session>;
 
 export type Inventory = { [name: string]: number };
+
+export type Subscriptions = { [id: string]: boolean };

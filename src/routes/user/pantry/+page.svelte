@@ -1,18 +1,19 @@
 <script lang="ts">
-    import { AddItemForm } from '$lib/components/modals';
+    import { AddItemForm, ManageSubscriptions } from '$lib/components/modals';
     import { ingredients, ingredientsCategory } from '$lib/data/ingredients';
     import { auth, db } from '$lib/firebase/firebase.client';
-    import { type Inventory } from '$lib/models';
+    import type { Inventory, Subscriptions } from '$lib/models';
     import {
         Autocomplete,
         InputChip,
         getModalStore,
         popup,
         type AutocompleteOption,
+        type ModalComponent,
         type ModalSettings,
         type PopupSettings,
     } from '@skeletonlabs/skeleton';
-    import { PencilLine, Plus, Trash2 } from '@steeze-ui/lucide-icons';
+    import { PencilLine, Plus, Trash2, Settings2 } from '@steeze-ui/lucide-icons';
     import { Icon } from '@steeze-ui/svelte-icon';
     import { child, onValue, ref, remove, update } from 'firebase/database';
     import { array, minValue, number, object, string, type Output } from 'valibot';
@@ -113,18 +114,40 @@
         };
         modalStore.trigger(modal);
     };
+
+    const subscriptionsRef = ref(db, `users/${user?.uid}/subscriptions`);
+
+    const modalSubscriptions = () => {
+        const modal: ModalSettings = {
+            type: 'component',
+            component: { ref: ManageSubscriptions },
+            title: 'Manage subscriptions',
+            body: '',
+        };
+        modalStore.trigger(modal);
+    };
 </script>
 
 <div class="p-12">
     <div class="flex flex-wrap items-center">
-        <div class="grid w-full">
-            <button
-                class="mb-2 me-2 inline-flex items-center gap-2 justify-self-end rounded-lg bg-green-500 px-3 py-1.5 hover:bg-green-700"
-                on:click={modalAddItem}
-            >
-                <Icon class="w-5 stroke-2" src={Plus} />
-                <span>Add Item</span>
-            </button>
+        <div class="flex w-full flex-wrap items-center justify-between">
+            <span class="text-xl">Pantry</span>
+            <div>
+                <button
+                    class="mb-2 me-2 inline-flex items-center gap-2 justify-self-end rounded-lg bg-green-500 px-3 py-1.5 hover:bg-green-700"
+                    on:click={modalAddItem}
+                >
+                    <Icon class="w-5 stroke-2" src={Plus} />
+                    <span>Add Item</span>
+                </button>
+                <button
+                    class="mb-2 me-2 inline-flex items-center gap-2 justify-self-end rounded-lg bg-orange-500 px-3 py-1.5 hover:bg-orange-700"
+                    on:click={modalSubscriptions}
+                >
+                    <Icon class="w-5 stroke-2" src={Settings2} />
+                    <span>Subscriptions</span>
+                </button>
+            </div>
         </div>
         <span class="grow" use:popup={popupSettings}>
             <InputChip
