@@ -1,6 +1,7 @@
 import { db } from '$lib/firebase/firebase.server';
 import { type Notification } from '$lib/models';
 import { json } from '@sveltejs/kit';
+import { serverTimestamp } from 'firebase/database';
 
 type PostFormat = {
     id: string;
@@ -15,7 +16,7 @@ export async function POST(r) {
 
     const newNotif: Notification = {
         amount: request.weight,
-        time: new Date(),
+        time: serverTimestamp(),
         id: request.id,
     };
 
