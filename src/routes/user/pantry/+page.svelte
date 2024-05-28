@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { AddItemForm, ManageSubscriptions } from '$lib/components/modals';
     import { ingredients, ingredientsCategory } from '$lib/data/ingredients';
     import { auth, db } from '$lib/firebase/firebase.client';
     import { error } from '$lib/functions/toast';
@@ -60,7 +59,7 @@
     }
 
     const modalDeleteItem = (itemName: string) => {
-        const modal: ModalSettings = {
+        modalStore.trigger({
             type: 'confirm',
             title: 'Delete item',
             body: `Are you sure you wish to delete ${itemName}?`,
@@ -68,8 +67,7 @@
                 if (!r) return;
                 pantryStore.remove(itemName);
             },
-        };
-        modalStore.trigger(modal);
+        });
     };
 
     const verifyIngredient = (itemName: string) => {
@@ -81,9 +79,9 @@
     };
 
     const modalAddItem = () => {
-        const modal: ModalSettings = {
+        modalStore.trigger({
             type: 'component',
-            component: { ref: AddItemForm },
+            component: 'addItemForm',
             title: 'Add item',
             body: '',
             response: (r: { itemName: string; amount: number }) => {
@@ -91,12 +89,11 @@
                 if (!verifyIngredient(r.itemName)) return;
                 pantryStore.add(r.itemName, r.amount);
             },
-        };
-        modalStore.trigger(modal);
+        });
     };
 
     const modalEditItem = (itemName: string) => {
-        const modal: ModalSettings = {
+        modalStore.trigger({
             type: 'prompt',
             title: 'Edit amount',
             body: itemName,
@@ -106,20 +103,18 @@
                 if (!r) return;
                 pantryStore.edit(itemName, r);
             },
-        };
-        modalStore.trigger(modal);
+        });
     };
 
     const subscriptionsRef = ref(db, `users/${user?.uid}/subscriptions`);
 
     const modalSubscriptions = () => {
-        const modal: ModalSettings = {
+        modalStore.trigger({
             type: 'component',
-            component: { ref: ManageSubscriptions },
+            component: 'manageSubscriptions',
             title: 'Manage subscriptions',
             body: '',
-        };
-        modalStore.trigger(modal);
+        });
     };
 </script>
 

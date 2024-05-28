@@ -1,8 +1,23 @@
 <script lang="ts">
     import { arrow, autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom';
-    import { Modal, Toast, initializeStores, modeCurrent, setModeCurrent, storePopup } from '@skeletonlabs/skeleton';
+    import {
+        Modal,
+        Toast,
+        initializeStores,
+        modeCurrent,
+        setModeCurrent,
+        storePopup,
+        type ModalComponent,
+    } from '@skeletonlabs/skeleton';
     import { onMount } from 'svelte';
     import '../app.postcss';
+
+    import { AddItemForm, ManageSubscriptions } from '$lib/components/modals';
+
+    const modalRegistry: Record<string, ModalComponent> = {
+        addItemForm: { ref: AddItemForm },
+        manageSubscriptions: { ref: ManageSubscriptions },
+    };
 
     initializeStores();
     storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
@@ -13,5 +28,5 @@
 </script>
 
 <Toast position="t" />
-<Modal />
+<Modal components={modalRegistry} />
 <slot />

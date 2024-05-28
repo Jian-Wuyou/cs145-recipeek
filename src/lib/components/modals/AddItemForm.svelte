@@ -1,8 +1,18 @@
 <script lang="ts">
-    import { getModalStore } from '@skeletonlabs/skeleton';
+    import {
+        getModalStore,
+        type AutocompleteOption,
+        Autocomplete,
+        type PopupSettings,
+        popup,
+    } from '@skeletonlabs/skeleton';
+    import { ingredients } from '$lib/data/ingredients';
+
     export let parent: any;
 
     const modalStore = getModalStore();
+
+    export const fixedAmount: number | null = null;
 
     const formData = {
         itemName: '',
@@ -13,6 +23,21 @@
         if ($modalStore[0].response) $modalStore[0].response(formData);
         modalStore.close();
     }
+
+    const ingredientOptions: AutocompleteOption<string>[] = [];
+    for (const [item, keyw] of Object.entries(ingredients)) {
+        ingredientOptions.push({
+            label: item,
+            value: item,
+            keywords: keyw.join(),
+        });
+    }
+
+    let popupSettings: PopupSettings = {
+        event: 'focus-click',
+        target: 'popupAutocomplete',
+        placement: 'bottom',
+    };
 
     // TODO: Add custom modal styling
     const cBase = 'card p-4 w-modal shadow-xl space-y-4';
@@ -27,11 +52,30 @@
         <form class="modal-form {cForm}">
             <label class="label">
                 <span>Item Name</span>
-                <input class="input" type="text" bind:value={formData.itemName} placeholder="Enter item name..." />
+                <input
+                    class="input"
+                    type="text"
+                    bind:value={formData.itemName}
+                    placeholder="Enter item name..."
+                    use:popup={popupSettings}
+                />
+                <div data-popup="popupAutocomplete">
+                    <div class="card max-h-48 w-full max-w-sm overflow-y-auto p-4" tabindex="-1">
+                        <Autocomplete
+                            bind:input={formData.itemName}
+                            allowlist={Object.keys(ingredients)}
+                            options={ingredientOptions}
+                        />
+                    </div>
+                </div>
             </label>
             <label class="label">
                 <span>Amount</span>
-                <input class="input" type="number" bind:value={formData.amount} placeholder="Enter amount..." />
+                {#if fixedAmount}
+                    <input class="input" type="number" disabled placeholder={fixedAmount} />
+                {:else}
+                    <input class="input" type="number" bind:value={formData.amount} placeholder="Enter amount..." />
+                {/if}
             </label>
         </form>
         <!-- prettier-ignore -->
