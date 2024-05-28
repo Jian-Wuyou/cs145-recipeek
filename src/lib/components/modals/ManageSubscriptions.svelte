@@ -5,6 +5,7 @@
     import { Check, Plus, Trash2, X } from '@steeze-ui/lucide-icons';
     import { Icon } from '@steeze-ui/svelte-icon';
     import { onValue, ref, set, child, remove } from 'firebase/database';
+    export let parent: any;
 
     const user = auth.currentUser;
     let subscriptions: Subscriptions = {};

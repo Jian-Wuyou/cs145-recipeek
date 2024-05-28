@@ -8,6 +8,7 @@
         InputChip,
         getModalStore,
         popup,
+        getToastStore,
         type AutocompleteOption,
         type ModalComponent,
         type ModalSettings,
@@ -17,6 +18,10 @@
     import { Icon } from '@steeze-ui/svelte-icon';
     import { child, onValue, ref, remove, update } from 'firebase/database';
     import { array, minValue, number, object, string, type Output } from 'valibot';
+    import { error } from '$lib/functions/toast';
+
+    const toastStore = getToastStore();
+    const modalStore = getModalStore();
 
     // Setup filter chips
     let filters: string[] = [];
@@ -77,14 +82,14 @@
         }
     }
 
-    const modalStore = getModalStore();
-
     const modalDeleteItem = (itemName: string) => {
         const modal: ModalSettings = {
             type: 'confirm',
             title: 'Delete item',
             body: `Are you sure you wish to delete ${itemName}?`,
-            response: (r: boolean) => remove(child(inventoryRef, itemName)),
+            response: (r: boolean) => {
+                if (r) remove(child(inventoryRef, itemName));
+            },
         };
         modalStore.trigger(modal);
     };
@@ -96,6 +101,11 @@
             title: 'Add item',
             body: '',
             response: (r: { itemName: string; amount: number }) => {
+                if (!r) return;
+                if (!ingredients.hasOwnProperty(r.itemName)) {
+                    toastStore.trigger(error('Invalid ingredient'));
+                    return;
+                }
                 const oldAmount = stock.hasOwnProperty(r.itemName) ? stock[r.itemName].available : 0;
                 update(inventoryRef, { [r.itemName]: oldAmount + r.amount });
             },
@@ -110,7 +120,9 @@
             body: itemName,
             value: stock[itemName].available,
             valueAttr: { type: 'number', min: 0, required: true },
-            response: (r: number) => update(inventoryRef, { [itemName]: r }),
+            response: (r: number) => {
+                if (r) update(inventoryRef, { [itemName]: r });
+            },
         };
         modalStore.trigger(modal);
     };
