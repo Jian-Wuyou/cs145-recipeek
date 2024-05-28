@@ -13,6 +13,7 @@ export const ingredientsCategory = [
 
 type Category = typeof ingredientsCategory;
 export const ingredients: { [name: string]: Category } = {
+    cheese: ['dairy & eggs'],
     butter: ['dairy & eggs'],
     egg: ['dairy & eggs'],
     garlic: ['vegetables', 'spices'],

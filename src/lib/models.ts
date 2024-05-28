@@ -10,8 +10,24 @@ export const Session = object({
 export type Session = Output<typeof Session>;
 
 export type Inventory = { [name: string]: number };
+export type Stock = {
+    [name: string]: {
+        category: string[];
+        available: number;
+    };
+};
 
 export type Notification = { amount: number; time: number; id: string };
 export type NotificationList = { [id: string]: Notification };
 
 export type Subscriptions = { [id: string]: boolean };
+
+export type Recipe = {
+    keywords: string;
+    alias: string;
+    ingredients: {
+        [ingredientName: string]: number;
+    };
+    instructions: string;
+    imgUrl: string;
+};
