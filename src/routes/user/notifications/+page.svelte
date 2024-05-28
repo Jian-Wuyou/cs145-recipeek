@@ -1,11 +1,12 @@
 <script lang="ts">
-    import { Icon } from '@steeze-ui/svelte-icon';
     import { ingredients } from '$lib/data/ingredients';
-    import { getNotificationStore, getPantryStore } from '$lib/store/userContext';
+    import { getNotificationStore } from '$lib/store/userContext';
     import { getModalStore } from '@skeletonlabs/skeleton';
+    import { PencilLine, Trash2 } from '@steeze-ui/lucide-icons';
+    import { Icon } from '@steeze-ui/svelte-icon';
+    import { AddItemForm } from '$lib/components/modals';
 
     const modalStore = getModalStore();
-    const pantryStore = getPantryStore();
     const notificationStore = getNotificationStore();
 
     const dateFormatter = new Intl.DateTimeFormat('en-US', {
@@ -13,16 +14,16 @@
         timeStyle: 'medium',
     });
 
-    const modalAddItem = () => {
+    const modalAddItem = (notifId: string, amount: number) => {
         modalStore.trigger({
             type: 'component',
-            component: 'addItemForm',
+            component: { ref: AddItemForm, props: { fixedAmount: amount } },
             title: 'Add item',
             body: '',
             response: (r: { itemName: string; amount: number }) => {
                 if (!r) return;
                 if (!ingredients.hasOwnProperty(r.itemName)) return;
-                pantryStore.add(r.itemName, r.amount);
+                notificationStore.confirm(notifId, r.itemName);
             },
         });
     };
@@ -45,13 +46,13 @@
                     <td>
                         <button
                             class="rounded-lg bg-green-500 p-1.5 hover:bg-green-700"
-                            on:click={() => modalEditItem(name)}
+                            on:click={() => modalAddItem(notifId, amount)}
                         >
                             <Icon class="w-5 stroke-2" src={PencilLine} />
                         </button>
                         <button
                             class="rounded-lg bg-red-500 p-1.5 hover:bg-red-700"
-                            on:click={() => modalDeleteItem(name)}
+                            on:click={() => notificationStore.dismiss(notifId)}
                         >
                             <Icon class="w-5 stroke-2" src={Trash2} />
                         </button>

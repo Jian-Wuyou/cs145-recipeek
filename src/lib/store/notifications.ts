@@ -7,7 +7,7 @@ import { getPantryStore } from '$lib/store/userContext';
 export function initStore() {
     const notificationsStore = writable<NotificationList>({});
     const pantryStore = getPantryStore();
-    const { subscribe, set } = notificationsStore;
+    const { subscribe, set, update } = notificationsStore;
     const user = auth.currentUser;
 
     const notificationsRef = ref(db, `users/${user?.uid}/notifications`);
@@ -17,7 +17,7 @@ export function initStore() {
     });
 
     const dismiss = (id: string) => {
-        notificationsStore.update(notifications => {
+        update(notifications => {
             let { [id]: _, ...rest } = notifications;
             return rest;
         });
@@ -34,6 +34,7 @@ export function initStore() {
         dismiss,
         confirm,
         set,
+        update,
     };
 }
 

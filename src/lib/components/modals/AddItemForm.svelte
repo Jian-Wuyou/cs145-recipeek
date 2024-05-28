@@ -12,16 +12,23 @@
 
     const modalStore = getModalStore();
 
-    export const fixedAmount: number | null = null;
+    export let fixedAmount: number | null = null;
 
     const formData = {
         itemName: '',
-        amount: 0,
+        amount: fixedAmount ? fixedAmount : 0,
     };
+    console.log(formData);
 
-    function onFormSubmit(): void {
-        if ($modalStore[0].response) $modalStore[0].response(formData);
+    function onFormSubmit() {
+        if ($modalStore[0].response) {
+            $modalStore[0].response(formData);
+        }
         modalStore.close();
+    }
+
+    function onSelection(event: CustomEvent<AutocompleteOption<string>>) {
+        formData.itemName = event.detail.value;
     }
 
     const ingredientOptions: AutocompleteOption<string>[] = [];
@@ -60,11 +67,12 @@
                     use:popup={popupSettings}
                 />
                 <div data-popup="popupAutocomplete">
-                    <div class="card max-h-48 w-full max-w-sm overflow-y-auto p-4" tabindex="-1">
+                    <div class="card relative z-50 max-h-48 w-full max-w-sm overflow-y-auto p-4" tabindex="-1">
                         <Autocomplete
                             bind:input={formData.itemName}
                             allowlist={Object.keys(ingredients)}
                             options={ingredientOptions}
+                            on:selection={onSelection}
                         />
                     </div>
                 </div>

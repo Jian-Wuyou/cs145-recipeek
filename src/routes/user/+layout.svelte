@@ -68,11 +68,12 @@
                 </div>
             </svelte:fragment>
             <svelte:fragment>
-                <button class="hover:text-surface-100" use:popup={popupNotifs}>
-                    <Icon class="w-6 stroke-2" src={Bell} />
-                    <!-- TODO: Add global notification store and popup under this -->
-                </button>
-                <div class="card h-3/5 w-48 overflow-scroll p-3 text-sm shadow-xl md:w-72" data-popup="notification">
+                <a href="/user/notifications">
+                    <button class="hover:text-surface-100">
+                        <Icon class="w-6 stroke-2" src={Bell} />
+                    </button>
+                </a>
+                <!-- <div class="card h-3/5 w-48 overflow-scroll p-3 text-sm shadow-xl md:w-72" data-popup="notification">
                     <div class="bg-surface-100-800-token" />
                     <nav class="list-nav">
                         <ul>
@@ -85,7 +86,7 @@
                             {/each}
                         </ul>
                     </nav>
-                </div>
+                </div> -->
             </svelte:fragment>
         </NavBar>
     </div>
