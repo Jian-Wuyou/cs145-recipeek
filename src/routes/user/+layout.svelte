@@ -90,7 +90,7 @@
             </svelte:fragment>
         </NavBar>
     </div>
-    <div class="container mx-auto h-full grow">
+    <div class="container h-full w-full grow">
         <slot />
     </div>
 </div>

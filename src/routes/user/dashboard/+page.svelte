@@ -18,11 +18,17 @@
     }
 
     $: enough = Object.keys(filtered).filter(name => filtered[name] == 0);
+    $: pickedIndex = Math.floor(Math.random() * enough.length);
+    $: pickedRecipe = recipes[enough[pickedIndex]];
 </script>
 
-<div class="flex h-dvh w-full items-center pb-20">
-    <h1 class="w-full text-center text-5xl">Dashboard</h1>
-    {#each enough as recipe (recipe)}
-        <div class="card p-4 text-sm">{recipe}</div>
-    {/each}
+<div class="flex h-dvh w-full flex-col gap-5 p-12">
+    <div class=" w-full"><h1 class=" text-center text-5xl">Dashboard</h1></div>
+    <div class=" w-full">
+        <div class="card p-4 text-sm">
+            {enough[pickedIndex]}
+            {pickedRecipe}
+            {pickedRecipe.instructions}
+        </div>
+    </div>
 </div>
