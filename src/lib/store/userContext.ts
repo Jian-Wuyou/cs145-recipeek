@@ -8,8 +8,8 @@ const NOTIFICATION = Symbol('notification');
 const PANTRY = Symbol('pantry');
 
 export function init() {
-    setContext(NOTIFICATION, Notification.initStore());
     setContext(PANTRY, Pantry.initStore());
+    setContext(NOTIFICATION, Notification.initStore());
 }
 
 export function getNotificationStore() {

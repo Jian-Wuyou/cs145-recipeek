@@ -1,10 +1,12 @@
 import { auth, db } from '$lib/firebase/firebase.client';
 import type { NotificationList } from '$lib/models';
-import { get as dbGet, onValue, ref, update } from 'firebase/database';
+import { onValue, ref, remove, child } from 'firebase/database';
 import { get, writable } from 'svelte/store';
+import { getPantryStore } from '$lib/store/userContext';
 
 export function initStore() {
     const notificationsStore = writable<NotificationList>({});
+    const pantryStore = getPantryStore();
     const { subscribe, set } = notificationsStore;
     const user = auth.currentUser;
 
@@ -14,17 +16,16 @@ export function initStore() {
         set(snapshotData);
     });
 
-    const dismiss = (id: string) =>
+    const dismiss = (id: string) => {
         notificationsStore.update(notifications => {
             let { [id]: _, ...rest } = notifications;
             return rest;
         });
+        remove(child(notificationsRef, id));
+    };
 
     const confirm = async (id: string, itemName: string) => {
-        const itemRef = ref(db, `users/${user?.uid}/inventory/${itemName}`);
-        const dataSnapshot = await dbGet(itemRef);
-        const oldAmount = dataSnapshot.exists() ? dataSnapshot.val() : 0;
-        update(itemRef, oldAmount + get(notificationsStore)[id].amount);
+        pantryStore.add(itemName, get(notificationsStore)[id].amount);
         dismiss(id);
     };
 

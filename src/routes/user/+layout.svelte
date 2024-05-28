@@ -30,6 +30,10 @@
     };
 
     const notificationStore = DataStore.getNotificationStore();
+    const dateFormatter = new Intl.DateTimeFormat('en-US', {
+        dateStyle: 'medium',
+        timeStyle: 'medium',
+    });
 </script>
 
 <div class="flex h-full flex-wrap">
@@ -68,12 +72,16 @@
                     <Icon class="w-6 stroke-2" src={Bell} />
                     <!-- TODO: Add global notification store and popup under this -->
                 </button>
-                <div class="card h-fit w-48 p-3 shadow-xl" data-popup="notification">
+                <div class="card h-3/5 w-48 overflow-scroll p-3 text-sm shadow-xl md:w-72" data-popup="notification">
                     <div class="bg-surface-100-800-token" />
                     <nav class="list-nav">
                         <ul>
-                            {#each Object.entries($notificationStore) as [id, notif] (id)}
-                                Controller {notif.id}: {notif.amount} change on {new Date(notif.time)}
+                            {#each Object.entries(Object.entries($notificationStore)) as [idx, [id, notif]] (id)}
+                                {#if idx != '0'}<hr />{/if}
+                                <li>
+                                    controller {notif.id}: {notif.amount > 0 ? 'added' : 'removed'}
+                                    {notif.amount}g on {dateFormatter.format(new Date(notif.time))}
+                                </li>
                             {/each}
                         </ul>
                     </nav>
