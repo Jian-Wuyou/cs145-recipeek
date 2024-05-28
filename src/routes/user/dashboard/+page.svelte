@@ -1,7 +1,4 @@
 <script lang="ts">
-    import { session } from '$lib/store/session';
-    import { get } from 'svelte/store';
-    import { auth } from '$lib/firebase/firebase.client';
 </script>
 
 <div class="w-full text-center">

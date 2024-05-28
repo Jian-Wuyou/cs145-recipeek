@@ -9,7 +9,7 @@ const initial: Session = {
     uid: null,
 };
 
-function initStore() {
+export function initStore() {
     const store = writable<Session>(initial);
 
     const { set, subscribe } = store;
@@ -46,6 +46,5 @@ function initStore() {
     };
 }
 
-type Store = ReturnType<typeof initStore>;
-
-export const session: Store = initStore();
+export type Store = ReturnType<typeof initStore>;
+export const sessionStore: Store = initStore();

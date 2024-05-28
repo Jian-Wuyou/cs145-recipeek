@@ -1,6 +1,6 @@
 import { auth, initializeFirebase } from '$lib/firebase/firebase.client';
+import { sessionStore } from '$lib/store/session';
 import { onAuthStateChanged } from 'firebase/auth';
-import { session } from '$lib/store/session';
 
 export const prerender = true;
 export const ssr = false;
@@ -16,8 +16,8 @@ export async function load() {
     function getAuthUser() {
         return new Promise(resolve => {
             onAuthStateChanged(auth, user => {
-                if (!user) session.clear();
-                else session.create(user);
+                if (!user) sessionStore.clear();
+                else sessionStore.create(user);
                 resolve(true);
             });
         });

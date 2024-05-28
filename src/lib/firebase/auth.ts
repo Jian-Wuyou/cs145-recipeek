@@ -1,12 +1,12 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { auth } from '$lib/firebase/firebase.client';
 import { initUserData } from '$lib/firebase/database.client';
-import { session } from '$lib/store/session';
+import { auth } from '$lib/firebase/firebase.client';
+import { sessionStore } from '$lib/store/session';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 export async function loginWithMail(email: string, password: string) {
     try {
         const { user } = await signInWithEmailAndPassword(auth, email, password);
-        session.create(user);
+        sessionStore.create(user);
     } catch (error) {
         throw new Error('Failed to login user');
     }
@@ -18,7 +18,7 @@ export async function registerWithMail(username: string, email: string, password
         const { user } = await createUserWithEmailAndPassword(auth, email, password);
         await updateProfile(user, { displayName: username });
         initUserData(user);
-        session.create(user);
+        sessionStore.create(user);
     } catch (error) {
         throw new Error('Failed to register user');
     }
@@ -27,7 +27,7 @@ export async function registerWithMail(username: string, email: string, password
 export async function signOutUser() {
     try {
         await auth.signOut();
-        session.clear();
+        sessionStore.clear();
     } catch (error) {
         throw new Error('Failed to sign out user');
     }

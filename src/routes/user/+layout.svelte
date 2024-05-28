@@ -1,13 +1,16 @@
 <script lang="ts">
+    import { goto } from '$app/navigation';
     import { NavBar } from '$lib/components';
     import { signOutUser } from '$lib/firebase/auth';
-    import { goto } from '$app/navigation';
-    import { UserCircle, ShoppingBag } from '@steeze-ui/heroicons';
-    import { BookText, Bell } from '@steeze-ui/lucide-icons';
+    import { sessionStore } from '$lib/store/session';
+    import * as DataStore from '$lib/store/userContext';
+    import { popup, type PopupSettings } from '@skeletonlabs/skeleton';
+    import { ShoppingBag, UserCircle } from '@steeze-ui/heroicons';
+    import { Bell, BookText } from '@steeze-ui/lucide-icons';
     import { Icon } from '@steeze-ui/svelte-icon';
-    import { session } from '$lib/store/session';
-    import { type PopupSettings, popup } from '@skeletonlabs/skeleton';
-    import { notifications } from '$lib/store/notifications';
+
+    DataStore.init();
+
     function logout() {
         signOutUser().then(() => {
             goto('/');
@@ -25,6 +28,8 @@
         target: 'notification',
         placement: 'bottom',
     };
+
+    const notificationStore = DataStore.getNotificationStore();
 </script>
 
 <div class="flex h-full flex-wrap">
@@ -43,7 +48,7 @@
             <svelte:fragment slot="trail">
                 <button class="btn flex items-center gap-2 hover:variant-soft-primary" use:popup={popupProfile}>
                     <span><Icon class="w-6 stroke-2" src={UserCircle} /></span>
-                    <span>{$session.username}</span>
+                    <span>{$sessionStore.username}</span>
                 </button>
                 <div class="card h-fit w-48 p-3 shadow-xl" data-popup="profile">
                     <div class="bg-surface-100-800-token" />
@@ -67,7 +72,7 @@
                     <div class="bg-surface-100-800-token" />
                     <nav class="list-nav">
                         <ul>
-                            {#each Object.entries($notifications) as [id, notif] (id)}
+                            {#each Object.entries($notificationStore) as [id, notif] (id)}
                                 Controller {notif.id}: {notif.amount} change on {new Date(notif.time)}
                             {/each}
                         </ul>

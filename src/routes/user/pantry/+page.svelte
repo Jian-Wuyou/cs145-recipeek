@@ -2,26 +2,26 @@
     import { AddItemForm, ManageSubscriptions } from '$lib/components/modals';
     import { ingredients, ingredientsCategory } from '$lib/data/ingredients';
     import { auth, db } from '$lib/firebase/firebase.client';
-    import type { Inventory, Subscriptions } from '$lib/models';
+    import { error } from '$lib/functions/toast';
+    import type { Stock } from '$lib/models';
+    import { getPantryStore } from '$lib/store/userContext';
     import {
         Autocomplete,
         InputChip,
         getModalStore,
-        popup,
         getToastStore,
+        popup,
         type AutocompleteOption,
-        type ModalComponent,
         type ModalSettings,
         type PopupSettings,
     } from '@skeletonlabs/skeleton';
-    import { PencilLine, Plus, Trash2, Settings2 } from '@steeze-ui/lucide-icons';
+    import { PencilLine, Plus, Settings2, Trash2 } from '@steeze-ui/lucide-icons';
     import { Icon } from '@steeze-ui/svelte-icon';
-    import { child, onValue, ref, remove, update } from 'firebase/database';
-    import { array, minValue, number, object, string, type Output } from 'valibot';
-    import { error } from '$lib/functions/toast';
+    import { ref } from 'firebase/database';
 
-    const toastStore = getToastStore();
     const modalStore = getModalStore();
+    const toastStore = getToastStore();
+    const pantryStore = getPantryStore();
 
     // Setup filter chips
     let filters: string[] = [];
@@ -44,39 +44,16 @@
         filterChip.addChip(event.detail.value);
     };
 
-    // Stock
-    const StockEntry = object({
-        category: array(string()),
-        available: number([minValue(0)]),
-    });
-
-    let stock: { [name: string]: Output<typeof StockEntry> } = {};
-
     const user = auth.currentUser;
-    const inventoryRef = ref(db, `users/${user?.uid}/inventory`);
 
-    onValue(inventoryRef, snapshot => {
-        const snapshotData: Inventory = snapshot.exists() ? snapshot.val() : {};
-        const snapshotStock: typeof stock = {};
-        for (const [k, v] of Object.entries(snapshotData)) {
-            if (!ingredients.hasOwnProperty(k)) continue;
-            snapshotStock[k] = {
-                category: ingredients[k],
-                available: v,
-            };
-        }
-        stock = snapshotStock;
-    });
-    // TODO: Add cancelCallback
-
-    let filtered: typeof stock = {};
+    let filtered: Stock = {};
 
     $: {
         if (filters.length == 0) {
-            filtered = stock;
+            filtered = $pantryStore;
         } else {
             filtered = {};
-            for (const [key, value] of Object.entries(stock)) {
+            for (const [key, value] of Object.entries($pantryStore)) {
                 if (value.category.some(v => filters.includes(v))) filtered[key] = value;
             }
         }
@@ -88,10 +65,19 @@
             title: 'Delete item',
             body: `Are you sure you wish to delete ${itemName}?`,
             response: (r: boolean) => {
-                if (r) remove(child(inventoryRef, itemName));
+                if (!r) return;
+                pantryStore.remove(itemName);
             },
         };
         modalStore.trigger(modal);
+    };
+
+    const verifyIngredient = (itemName: string) => {
+        const valid = ingredients.hasOwnProperty(itemName);
+        if (!valid) {
+            toastStore.trigger(error('Invalid ingredient'));
+        }
+        return valid;
     };
 
     const modalAddItem = () => {
@@ -102,12 +88,8 @@
             body: '',
             response: (r: { itemName: string; amount: number }) => {
                 if (!r) return;
-                if (!ingredients.hasOwnProperty(r.itemName)) {
-                    toastStore.trigger(error('Invalid ingredient'));
-                    return;
-                }
-                const oldAmount = stock.hasOwnProperty(r.itemName) ? stock[r.itemName].available : 0;
-                update(inventoryRef, { [r.itemName]: oldAmount + r.amount });
+                if (!verifyIngredient(r.itemName)) return;
+                pantryStore.add(r.itemName, r.amount);
             },
         };
         modalStore.trigger(modal);
@@ -118,10 +100,11 @@
             type: 'prompt',
             title: 'Edit amount',
             body: itemName,
-            value: stock[itemName].available,
+            value: $pantryStore[itemName].available,
             valueAttr: { type: 'number', min: 0, required: true },
             response: (r: number) => {
-                if (r) update(inventoryRef, { [itemName]: r });
+                if (!r) return;
+                pantryStore.edit(itemName, r);
             },
         };
         modalStore.trigger(modal);

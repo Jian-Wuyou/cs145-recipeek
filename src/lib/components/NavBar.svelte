@@ -2,9 +2,9 @@
     import { AppBar } from '@skeletonlabs/skeleton';
     import { Fire } from '@steeze-ui/heroicons';
     import { Icon } from '@steeze-ui/svelte-icon';
-    import { session } from '$lib/store/session';
+    import { sessionStore } from '$lib/store/session';
 
-    $: url = $session.loggedIn ? '/user/dashboard' : '/';
+    $: url = $sessionStore.loggedIn ? '/user/dashboard' : '/';
 </script>
 
 <AppBar shadow="shadow-2xl">

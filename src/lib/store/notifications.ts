@@ -3,15 +3,15 @@ import type { NotificationList } from '$lib/models';
 import { get as dbGet, onValue, ref, update } from 'firebase/database';
 import { get, writable } from 'svelte/store';
 
-const initStore = () => {
+export function initStore() {
     const notificationsStore = writable<NotificationList>({});
-    const { subscribe } = notificationsStore;
-
+    const { subscribe, set } = notificationsStore;
     const user = auth.currentUser;
+
     const notificationsRef = ref(db, `users/${user?.uid}/notifications`);
     onValue(notificationsRef, snapshot => {
         const snapshotData: NotificationList = snapshot.exists() ? snapshot.val() : {};
-        notificationsStore.set(snapshotData);
+        set(snapshotData);
     });
 
     const dismiss = (id: string) =>
@@ -32,9 +32,8 @@ const initStore = () => {
         subscribe,
         dismiss,
         confirm,
+        set,
     };
-};
+}
 
-// initialize the store
-type Store = ReturnType<typeof initStore>;
-export const notifications: Store = initStore();
+export type Store = ReturnType<typeof initStore>;
