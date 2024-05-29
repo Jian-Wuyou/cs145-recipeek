@@ -8,7 +8,7 @@
     } from '@skeletonlabs/skeleton';
     import { ingredients } from '$lib/data/ingredients';
 
-    export let parent: any;
+    export const parent: any = null;
 
     const modalStore = getModalStore();
 

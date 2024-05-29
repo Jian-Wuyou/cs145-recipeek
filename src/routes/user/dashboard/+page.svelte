@@ -25,10 +25,11 @@
 <div class="flex h-dvh w-full flex-col gap-5 p-12">
     <div class=" w-full"><h1 class=" text-center text-5xl">Dashboard</h1></div>
     <div class=" w-full">
+        <h3 class="h3">Recipe of the Day</h3>
         <div class="card p-4 text-sm">
             {enough[pickedIndex]}
             {pickedRecipe}
-            {pickedRecipe.instructions}
+            {pickedRecipe?.instructions}
         </div>
     </div>
 </div>

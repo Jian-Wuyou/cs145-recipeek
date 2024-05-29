@@ -11,7 +11,6 @@
         getToastStore,
         popup,
         type AutocompleteOption,
-        type ModalSettings,
         type PopupSettings,
     } from '@skeletonlabs/skeleton';
     import { PencilLine, Plus, Settings2, Trash2 } from '@steeze-ui/lucide-icons';
@@ -160,9 +159,9 @@
             />
         </div>
     </div>
-    <div class="table-container">
-        <table class="table table-hover table-compact">
-            <thead>
+    <div class="table-container block h-[65dvh] w-full">
+        <table class="table table-hover table-compact w-full overflow-y-scroll">
+            <thead class="sticky top-0">
                 <tr>
                     <th>Ingredient Name</th>
                     <th>Category</th>
