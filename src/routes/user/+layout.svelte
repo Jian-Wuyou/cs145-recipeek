@@ -11,6 +11,8 @@
 
     DataStore.init();
 
+    const notificationStore = DataStore.getNotificationStore();
+
     function logout() {
         signOutUser().then(() => {
             goto('/');
@@ -22,18 +24,6 @@
         target: 'profile',
         placement: 'bottom',
     };
-
-    const popupNotifs: PopupSettings = {
-        event: 'click',
-        target: 'notification',
-        placement: 'bottom',
-    };
-
-    const notificationStore = DataStore.getNotificationStore();
-    const dateFormatter = new Intl.DateTimeFormat('en-US', {
-        dateStyle: 'medium',
-        timeStyle: 'medium',
-    });
 </script>
 
 <div class="flex h-full flex-wrap">
@@ -69,24 +59,22 @@
             </svelte:fragment>
             <svelte:fragment>
                 <a href="/user/notifications">
-                    <button class="hover:text-surface-100">
-                        <Icon class="w-6 stroke-2" src={Bell} />
-                    </button>
+                    <div class="relative inline-block">
+                        <button class="hover:text-surface-100">
+                            {#if Object.keys($notificationStore).length > 0}
+                                {@const displayValue =
+                                    Object.keys($notificationStore).length > 9
+                                        ? '9+'
+                                        : Object.keys($notificationStore).length}
+                                <span
+                                    class="variant-filled-warning absolute -right-1.5 -top-1.5 z-10 flex h-4 w-4 items-center justify-center rounded-full text-xs"
+                                    >{displayValue}</span
+                                >
+                            {/if}
+                            <Icon class="w-6 stroke-2" src={Bell} />
+                        </button>
+                    </div>
                 </a>
-                <!-- <div class="card h-3/5 w-48 overflow-scroll p-3 text-sm shadow-xl md:w-72" data-popup="notification">
-                    <div class="bg-surface-100-800-token" />
-                    <nav class="list-nav">
-                        <ul>
-                            {#each Object.entries(Object.entries($notificationStore)) as [idx, [id, notif]] (id)}
-                                {#if idx != '0'}<hr />{/if}
-                                <li>
-                                    controller {notif.id}: {notif.amount > 0 ? 'added' : 'removed'}
-                                    {notif.amount}g on {dateFormatter.format(new Date(notif.time))}
-                                </li>
-                            {/each}
-                        </ul>
-                    </nav>
-                </div> -->
             </svelte:fragment>
         </NavBar>
     </div>
