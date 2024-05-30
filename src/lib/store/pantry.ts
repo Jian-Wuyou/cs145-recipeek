@@ -31,6 +31,8 @@ export function initStore() {
             return n;
         });
         dbUpdate(inventoryRef, { [itemName]: amount + oldAmount });
+        if (amount + oldAmount > 0) dbUpdate(inventoryRef, { [itemName]: amount + oldAmount });
+        else remove(itemName);
     };
 
     const edit = (itemName: string, amount: number) => {
