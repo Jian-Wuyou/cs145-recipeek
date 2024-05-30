@@ -4,7 +4,7 @@
     import { signOutUser } from '$lib/firebase/auth';
     import { sessionStore } from '$lib/store/session';
     import * as DataStore from '$lib/store/userContext';
-    import { popup, type PopupSettings } from '@skeletonlabs/skeleton';
+    import { popup, type PopupSettings, LightSwitch } from '@skeletonlabs/skeleton';
     import { ShoppingBag, UserCircle } from '@steeze-ui/heroicons';
     import { Bell, BookText } from '@steeze-ui/lucide-icons';
     import { Icon } from '@steeze-ui/svelte-icon';
@@ -30,22 +30,28 @@
     <div class="h-min basis-full">
         <NavBar>
             <svelte:fragment slot="lead">
-                <a class="btn flex items-center gap-2 hover:variant-soft-primary" href="/user/recipes">
-                    <span><Icon class="w-6 stroke-2" src={BookText} /></span>
-                    <span>Recipes</span>
-                </a>
-                <a class="btn flex items-center gap-2 hover:variant-soft-primary" href="/user/pantry">
-                    <span><Icon class="w-6 stroke-2" src={ShoppingBag} /></span>
-                    <span>Pantry</span>
-                </a>
+                <div class="flex auto-rows-fr">
+                    <a class="flex w-[50%] items-center gap-2 px-4 hover:variant-soft-primary" href="/user/recipes">
+                        <span><Icon class="w-6 stroke-2" src={BookText} /></span>
+                        <span>Recipes</span>
+                    </a>
+                    <a class="flex w-[50%] items-center gap-2 px-4 hover:variant-soft-primary" href="/user/pantry">
+                        <span><Icon class="w-6 stroke-2" src={ShoppingBag} /></span>
+                        <span>Pantry</span>
+                    </a>
+                </div>
             </svelte:fragment>
             <svelte:fragment slot="trail">
                 <button class="btn flex items-center gap-2 hover:variant-soft-primary" use:popup={popupProfile}>
                     <span><Icon class="w-6 stroke-2" src={UserCircle} /></span>
                     <span>{$sessionStore.username}</span>
                 </button>
-                <div class="card h-fit w-48 p-3 shadow-xl" data-popup="profile">
-                    <div class="bg-surface-100-800-token" />
+                <div class="card absolute z-50 h-fit w-48 p-3 shadow-xl" data-popup="profile">
+                    <section class="flex items-center justify-between">
+                        <h6 class="h6">Mode</h6>
+                        <LightSwitch />
+                    </section>
+                    <hr class="my-4" />
                     <nav class="list-nav">
                         <ul>
                             <li>
@@ -78,7 +84,7 @@
             </svelte:fragment>
         </NavBar>
     </div>
-    <div class="container h-full w-full grow">
+    <div class="container w-full grow p-12">
         <slot />
     </div>
 </div>

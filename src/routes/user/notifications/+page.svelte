@@ -29,8 +29,8 @@
     };
 </script>
 
-<div class="table-container">
-    <table class="table table-hover table-compact">
+<div class="table-container block h-[80dvh] w-full">
+    <table class="table table-hover table-compact overflow-y-scroll">
         <thead>
             <tr>
                 <th colspan="2">Notifications</th>
@@ -40,8 +40,9 @@
             {#each Object.entries($notificationStore) as [notifId, { amount, time, id }] (notifId)}
                 <tr>
                     <td>
+                        <b>{dateFormatter.format(new Date(time))}</b><br />
                         controller {id}: {amount > 0 ? 'added' : 'removed'}
-                        {amount}g on {dateFormatter.format(new Date(time))}
+                        {amount}g
                     </td>
                     <td>
                         <button

@@ -23,13 +23,33 @@
 </script>
 
 <div class="flex h-dvh w-full flex-col gap-5 p-12">
-    <div class=" w-full"><h1 class=" text-center text-5xl">Dashboard</h1></div>
+    <div class=" w-full"><h1 class=" text-center text-5xl">Recipe of the Day</h1></div>
     <div class=" w-full">
-        <h3 class="h3">Recipe of the Day</h3>
-        <div class="card p-4 text-sm">
-            {enough[pickedIndex]}
-            {pickedRecipe}
-            {pickedRecipe?.instructions}
+        <div class="card flex overflow-hidden p-4 text-sm">
+            <div class="relative w-[30%] flex-none overflow-hidden">
+                <img alt={enough[pickedIndex]} src={pickedRecipe?.imgUrl} />
+            </div>
+            <div class="flex flex-col gap-4 px-5">
+                <div class="text-center text-3xl">
+                    {enough[pickedIndex]}
+                </div>
+                <div>
+                    {pickedRecipe?.ingredients}
+                </div>
+                <hr />
+                <div>
+                    <p class="text-xl">Instructions</p>
+                    <ol class="list">
+                        {#if pickedRecipe}
+                            {#each Object.entries(pickedRecipe.instructions) as [id, instruction]}
+                                <li>
+                                    <span>{Number(id) + 1}. {instruction}</span>
+                                </li>
+                            {/each}
+                        {/if}
+                    </ol>
+                </div>
+            </div>
         </div>
     </div>
 </div>

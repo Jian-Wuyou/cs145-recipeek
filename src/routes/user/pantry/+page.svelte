@@ -16,6 +16,7 @@
     import { PencilLine, Plus, Settings2, Trash2 } from '@steeze-ui/lucide-icons';
     import { Icon } from '@steeze-ui/svelte-icon';
     import { ref } from 'firebase/database';
+    import { decimalPlaces } from '$lib/functions/math';
 
     const modalStore = getModalStore();
     const toastStore = getToastStore();
@@ -117,85 +118,83 @@
     };
 </script>
 
-<div class="p-12">
-    <div class="flex flex-wrap items-center">
-        <div class="flex w-full flex-wrap items-center justify-between">
-            <span class="text-xl">Pantry</span>
-            <div>
-                <button
-                    class="mb-2 me-2 inline-flex items-center gap-2 justify-self-end rounded-lg bg-green-500 px-3 py-1.5 hover:bg-green-700"
-                    on:click={modalAddItem}
-                >
-                    <Icon class="w-5 stroke-2" src={Plus} />
-                    <span>Add Item</span>
-                </button>
-                <button
-                    class="mb-2 me-2 inline-flex items-center gap-2 justify-self-end rounded-lg bg-orange-500 px-3 py-1.5 hover:bg-orange-700"
-                    on:click={modalSubscriptions}
-                >
-                    <Icon class="w-5 stroke-2" src={Settings2} />
-                    <span>Subscriptions</span>
-                </button>
-            </div>
-        </div>
-        <span class="grow" use:popup={popupSettings}>
-            <InputChip
-                bind:input={filterInput}
-                bind:value={filters}
-                name="chips"
-                whitelist={ingredientsCategory}
-                bind:this={filterChip}
-                placeholder="Find category..."
-            />
-        </span>
-    </div>
-    <div data-popup="popupAutocomplete">
-        <div class="card max-h-48 w-full max-w-sm overflow-y-auto p-4" tabindex="-1">
-            <Autocomplete
-                bind:input={filterInput}
-                options={categoryOptions}
-                denylist={filters}
-                on:selection={onInputChipSelect}
-            />
+<div class="flex flex-wrap items-center">
+    <div class="flex w-full flex-wrap items-center justify-between">
+        <span class="text-xl">Pantry</span>
+        <div>
+            <button
+                class="mb-2 me-2 inline-flex items-center gap-2 justify-self-end rounded-lg bg-green-600 px-3 py-1.5 text-white hover:bg-green-700"
+                on:click={modalAddItem}
+            >
+                <Icon class="w-5 stroke-2" src={Plus} />
+                <span>Add Item</span>
+            </button>
+            <button
+                class="mb-2 me-2 inline-flex items-center gap-2 justify-self-end rounded-lg bg-orange-600 px-3 py-1.5 text-white hover:bg-orange-700"
+                on:click={modalSubscriptions}
+            >
+                <Icon class="w-5 stroke-2" src={Settings2} />
+                <span>Subscriptions</span>
+            </button>
         </div>
     </div>
-    <div class="table-container block h-[65dvh] w-full">
-        <table class="table table-hover table-compact w-full overflow-y-scroll">
-            <thead class="sticky top-0">
+    <span class="grow" use:popup={popupSettings}>
+        <InputChip
+            bind:input={filterInput}
+            bind:value={filters}
+            name="chips"
+            whitelist={ingredientsCategory}
+            bind:this={filterChip}
+            placeholder="Find category..."
+        />
+    </span>
+</div>
+<div data-popup="popupAutocomplete">
+    <div class="card max-h-48 w-full max-w-sm overflow-y-auto p-4" tabindex="-1">
+        <Autocomplete
+            bind:input={filterInput}
+            options={categoryOptions}
+            denylist={filters}
+            on:selection={onInputChipSelect}
+        />
+    </div>
+</div>
+<div class="table-container block h-[65dvh] w-full">
+    <table class="table table-hover table-compact w-full overflow-y-scroll">
+        <thead class="sticky top-0">
+            <tr>
+                <th>Ingredient Name</th>
+                <th>Category</th>
+                <th>Available</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {#each Object.entries(filtered) as [name, { category, available }] (name)}
                 <tr>
-                    <th>Ingredient Name</th>
-                    <th>Category</th>
-                    <th>Available</th>
-                    <th>Actions</th>
+                    <td>{name}</td>
+                    <td>
+                        {#each category as c}
+                            <span class="variant-filled chip mx-1">{c}</span>
+                        {/each}
+                    </td>
+                    <td>{decimalPlaces(available, 0)}</td>
+                    <td>
+                        <button
+                            class="rounded-lg bg-green-600 p-1.5 text-white hover:bg-green-700"
+                            on:click={() => modalEditItem(name)}
+                        >
+                            <Icon class="w-5 stroke-2" src={PencilLine} />
+                        </button>
+                        <button
+                            class="rounded-lg bg-red-600 p-1.5 text-white hover:bg-red-700"
+                            on:click={() => modalDeleteItem(name)}
+                        >
+                            <Icon class="w-5 stroke-2" src={Trash2} />
+                        </button>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                {#each Object.entries(filtered) as [name, { category, available }] (name)}
-                    <tr>
-                        <td>{name}</td>
-                        <td>
-                            {#each category as c}
-                                <span class="variant-filled chip mx-1">{c}</span>
-                            {/each}
-                        </td>
-                        <td>{available}</td>
-                        <td>
-                            <button
-                                class="rounded-lg bg-green-500 p-1.5 hover:bg-green-700"
-                                on:click={() => modalEditItem(name)}
-                            >
-                                <Icon class="w-5 stroke-2" src={PencilLine} />
-                            </button>
-                            <button
-                                class="rounded-lg bg-red-500 p-1.5 hover:bg-red-700"
-                                on:click={() => modalDeleteItem(name)}
-                            >
-                                <Icon class="w-5 stroke-2" src={Trash2} />
-                            </button>
-                        </td>
-                    </tr>
-                {/each}
-            </tbody>
-        </table>
-    </div>
+            {/each}
+        </tbody>
+    </table>
 </div>

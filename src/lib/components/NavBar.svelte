@@ -7,16 +7,18 @@
     $: url = $sessionStore.loggedIn ? '/user/dashboard' : '/';
 </script>
 
-<AppBar shadow="shadow-2xl">
+<AppBar shadow="shadow-md" padding="p-0">
     <svelte:fragment slot="lead">
-        <a href={url}>
-            <div class="flex w-auto items-center gap-2">
-                <Icon class="w-8 stroke-2" src={Fire} />
-                <span class="text-2xl font-semibold">ReciPeek</span>
-            </div>
-        </a>
-        <div class="mx-5 text-surface-500">|</div>
-        <slot name="lead" />
+        <div class="flex auto-rows-fr">
+            <a href={url}>
+                <div class="m-4 flex w-auto items-center gap-2">
+                    <Icon class="w-8 stroke-2" src={Fire} />
+                    <span class="text-2xl font-semibold">ReciPeek</span>
+                </div>
+            </a>
+            <div class="m-auto mx-3">|</div>
+            <slot name="lead" />
+        </div>
     </svelte:fragment>
     <svelte:fragment slot="trail">
         <slot />

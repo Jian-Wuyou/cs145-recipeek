@@ -28,6 +28,6 @@ export type Recipe = {
     ingredients: {
         [ingredientName: string]: number;
     };
-    instructions: string;
+    instructions: string[];
     imgUrl: string;
 };
