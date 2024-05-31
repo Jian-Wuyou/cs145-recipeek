@@ -186,17 +186,17 @@ export const ReciPeekTheme2: CustomThemeConfig = {
         '--color-error-700': '158 19 19', // #9e1313
         '--color-error-800': '126 15 15', // #7e0f0f
         '--color-error-900': '103 12 12', // #670c0c
-        // surface | #987C7C
-        '--color-surface-50': '255 255 255', // #ffffff
-        '--color-surface-100': '255 240 240', // #FFF0F0
-        '--color-surface-200': '225 207 207', // #E1CFCF
-        '--color-surface-300': '196 174 174', // #C4AEAE
-        '--color-surface-400': '166 141 141', // #A68D8D
-        '--color-surface-500': '137 107 107', // #896B6B
-        '--color-surface-600': '107 74 74', // #6B4A4A
-        '--color-surface-700': '78 41 41', // #4E2929
-        '--color-surface-800': '48 8 8', // #300808
-        '--color-surface-900': '38 0 0', // #260000
+        // surface | #2d1717 
+		"--color-surface-50": "224 220 220", // #e0dcdc
+		"--color-surface-100": "213 209 209", // #d5d1d1
+		"--color-surface-200": "203 197 197", // #cbc5c5
+		"--color-surface-300": "171 162 162", // #aba2a2
+		"--color-surface-400": "108 93 93", // #6c5d5d
+		"--color-surface-500": "45 23 23", // #2d1717
+		"--color-surface-600": "41 21 21", // #291515
+		"--color-surface-700": "34 17 17", // #221111
+		"--color-surface-800": "27 14 14", // #1b0e0e
+		"--color-surface-900": "22 11 11", // #160b0b
     },
 };
 
