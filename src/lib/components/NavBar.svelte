@@ -16,7 +16,7 @@
                     <span class="text-2xl font-semibold">ReciPeek</span>
                 </div>
             </a>
-            <div class="m-auto mx-3">|</div>
+            <div class="m-auto mx-3 max-sm:hidden">|</div>
             <slot name="lead" />
         </div>
     </svelte:fragment>
