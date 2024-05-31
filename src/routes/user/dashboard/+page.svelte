@@ -1,6 +1,10 @@
 <script lang="ts">
     import { recipes } from '$lib/data/recipes';
     import { getPantryStore } from '$lib/store/userContext';
+    import { Icon } from '@steeze-ui/svelte-icon';
+    import { MoveRight } from '@steeze-ui/lucide-icons';
+
+    import { ArrowRight } from '@steeze-ui/heroicons';
 
     const pantryStore = getPantryStore();
 
@@ -69,7 +73,8 @@
                     class="inline-flex items-center justify-center rounded-lg bg-blue-700 px-5 py-3 text-center text-base font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900"
                 >
                     Add ingredients
-                    <svg
+                    <Icon src={ArrowRight} class="relative ms-2 h-3.5 w-3.5 stroke-2" />
+                    <!-- <svg
                         class="ms-2 h-3.5 w-3.5 rtl:rotate-180"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
@@ -83,7 +88,7 @@
                             stroke-width="2"
                             d="M1 5h12m0 0L9 1m4 4L9 9"
                         />
-                    </svg>
+                    </svg> -->
                 </a>
             </div>
         </div>
