@@ -4,10 +4,7 @@ export const recipes: { [recipeName: string]: Recipe } = {
     'Instant Pot Mashed Potatoes': {
         keywords: 'potato, side dish, gluten free, mashed potato',
         alias: 'mashed potato, boiled potato',
-        ingredients: {
-            potato: '5 pounds of {0}es',
-            butter: '1 cup unsalted {0}',
-        },
+        ingredients: { potato: '5 pounds of {0}es', butter: '1 cup unsalted {0}' },
         otherIngredients: {
             'sour cream': '1 cup {0}',
             'half-and-half': '1 1/2 cups {0}, heated',
@@ -42,9 +39,7 @@ export const recipes: { [recipeName: string]: Recipe } = {
     'Oven-Fried Potatoes': {
         keywords: 'potato, side dish, vegan, gluten free',
         alias: 'baked potato, fried potato',
-        ingredients: {
-            potato: '3 {0}es',
-        },
+        ingredients: { potato: '3 {0}es' },
         instructions: [
             'Preheat the oven to 450 degrees F.',
             "Leaving peel on, cut the potatoes into 6 lengthwise to make long wedges, about 3/4-inch to 1-inch wide. Combine the potatoes, oil, salt and cayenne on the baking sheet and toss to combine. (1 less bowl to wash) Arrange the potatoes on a baking sheet in a single layer, so a cut side is in contact with the pan, but evenly spaced so the potatoes aren't touching each other. Bake until golden brown and cooked through, about 30 minutes. Slip a spatula under the potatoes to turn them over and cook for 5 minutes more.",
@@ -55,10 +50,7 @@ export const recipes: { [recipeName: string]: Recipe } = {
     'Salt Potatoes': {
         keywords: 'potato, gluten free',
         alias: 'boiled potato, salt potato',
-        ingredients: {
-            potato: '4 {0}es',
-            butter: '1 stickk {0}',
-        },
+        ingredients: { potato: '4 {0}es', butter: '1 stickk {0}' },
         instructions: [
             'Put the potatoes, 8 cups water and the salt in a large pot. Cover and bring to a boil over high heat, then reduce the heat to medium and simmer until the potatoes are fork-tender, about 30 minutes.',
             'Drain the potatoes in a colander and shake to remove excess water. Let the skins dry in the colander so that some of the salt crystallizes.',
@@ -69,12 +61,7 @@ export const recipes: { [recipeName: string]: Recipe } = {
     'Mashed Potatoes': {
         keywords: 'potato, mashed potato, boiled potato',
         alias: 'boiled potato',
-        ingredients: {
-            potato: '4 {0}es',
-            butter: '1 1/2 cup {0}',
-            'bay leaf': '{0}',
-            chive: '{0}',
-        },
+        ingredients: { potato: '4 {0}es', butter: '1 1/2 cup {0}', 'bay leaf': '{0}', chive: '{0}' },
         instructions: [
             'Put the potatoes into a large pot, add the bay leaf, 2 tablespoons salt, and cover with cold water. Bring to a boil over medium-high heat and cook until the potatoes are tender, about 20 minutes.',
             'Drain them well and remove the bay leaf.',
@@ -96,11 +83,7 @@ export const recipes: { [recipeName: string]: Recipe } = {
             ginger: '1 tablespoons freshly grated {0}',
             'coconut milk': '1 cup of canned {0}',
         },
-        otherIngredients: {
-            'vegetable broth': '6 cups {0}',
-            oil: '1 tablespoon {0}',
-            salt: '{0} to taste',
-        },
+        otherIngredients: { 'vegetable broth': '6 cups {0}', oil: '1 tablespoon {0}', salt: '{0} to taste' },
         instructions: [
             'Bring the broth to a boil in a large pot. Add the rinsed monggo beans and cook, uncovered, for about 40 minutes. I checked on mine every 10 minutes and added more water as needed (mine needed more water every time I checked it). You want the consistency to be like a very thick soup.',
             'Heat the oil in a large skillet over medium heat. Saute the onion, garlic, and ginger in the oil in a large nonstick skillet until soft and fragrant, about 3 minutes. Add to the monggo pot and allow the mixture to simmer together for a few minutes.',
@@ -118,11 +101,7 @@ export const recipes: { [recipeName: string]: Recipe } = {
             monggo: '2 cups {0} beans',
             potato: '10 small {0}',
         },
-        otherIngredients: {
-            turmeric: '2 tablespoons {0}',
-            chicken: '2 lbs {0} wings',
-            'chicken cube': '3 {0}s',
-        },
+        otherIngredients: { turmeric: '2 tablespoons {0}', chicken: '2 lbs {0} wings', 'chicken cube': '3 {0}s' },
         instructions: [
             'Place chicken, onions, bay leaves, garlic if fresh used and oil in a pot and saute until onions and chicken are golden brown. Add the rest of ingredients and cook covered on low heat about an hour, until chicken, mung and potatoes are ready.',
             'Add some more water if soup is too thick.',
@@ -133,11 +112,7 @@ export const recipes: { [recipeName: string]: Recipe } = {
     'Canned Tuna Pasta': {
         keywords: 'pasta, tuna, canned tuna, main dish',
         alias: 'tuna pasta, tuna sphagetti',
-        ingredients: {
-            pasta: '200g of {0}',
-            tuna: '285g canned {0} in oil',
-            garlic: '2 cloves of finely minced {0}',
-        },
+        ingredients: { pasta: '200g of {0}', tuna: '285g canned {0} in oil', garlic: '2 cloves of finely minced {0}' },
         otherIngredients: {
             salt: '1 tablespoon of cooking {0}',
             'anchovy fillet': '2 minced {0}s',
@@ -183,15 +158,8 @@ export const recipes: { [recipeName: string]: Recipe } = {
     'Ginisang Corned Beef': {
         keywords: 'ulam, meal, main dish, corned beef',
         alias: 'cooked corned beef',
-        ingredients: {
-            'corned beef': '1 can of {0}',
-            garlic: '4 cloves of {0}',
-            potato: '1 {0}',
-            onion: '1 {0}',
-        },
-        otherIngredients: {
-            oil: '2 tablespoons of vegetable {0}',
-        },
+        ingredients: { 'corned beef': '1 can of {0}', garlic: '4 cloves of {0}', potato: '1 {0}', onion: '1 {0}' },
+        otherIngredients: { oil: '2 tablespoons of vegetable {0}' },
         instructions: [
             'Sauté garlic in oil until golden brown.',
             'Add potato and cook until light golden brown. Add corned beef .',
@@ -202,10 +170,7 @@ export const recipes: { [recipeName: string]: Recipe } = {
     'Sardines Rice Bowl': {
         keywords: 'ulam, meal, main dish, sardines',
         alias: 'ginisang sardinas, sardines in tomato sauce, sardines with rice',
-        ingredients: {
-            onion: '1/2 small sliced {0}',
-            sardines: '1 can of {0} in tomato sauce',
-        },
+        ingredients: { onion: '1/2 small sliced {0}', sardines: '1 can of {0} in tomato sauce' },
         otherIngredients: {
             oil: '1 teaspoon of {0}',
             'red pepper flakes': '1 tablespoon {0}',
@@ -226,13 +191,8 @@ export const recipes: { [recipeName: string]: Recipe } = {
     'Beans on Toast': {
         keywords: 'meal, snack, british',
         alias: 'british beans',
-        ingredients: {
-            beans: '1 tin can of {0}',
-            bread: '3 slices of {0}',
-        },
-        otherIngredients: {
-            butter: 'pat of {0} is optional',
-        },
+        ingredients: { beans: '1 tin can of {0}', bread: '3 slices of {0}', butter: 'pat of {0} is optional' },
+        otherIngredients: {},
         instructions: [
             'Put the beans into a small pot over medium low heat.',
             'Put the bread in the toaster, and make the toast as desired. (If you like, you can butter the toast, but I find it unecessary as the beans are the primary flavor.)',
@@ -247,12 +207,9 @@ export const recipes: { [recipeName: string]: Recipe } = {
         ingredients: {
             pasta: '6 {0} noodles',
             'fennel seed': '1 teaspoon {0}',
-        },
-        otherIngredients: {
             cheese: '2 cups shredded part-skim mozzarella {0}',
-            'ground beef': '1 pound {0}',
-            'pasta sauce': '1 jar {0}',
         },
+        otherIngredients: { 'ground beef': '1 pound {0}', 'pasta sauce': '1 jar {0}' },
         instructions: [
             'Cook lasagna noodles according to package directions. Meanwhile, in a large skillet, cook beef over medium heat until no longer pink, breaking it into crumbles; drain. Stir in spaghetti sauce and, if desired, fennel seed; heat through.',
             'Drain noodles. Spread 1/4 cup meat sauce over each noodle; sprinkle with 2 tablespoons cheese. Carefully roll up noodles and place seam side down in an 8-in. square baking dish. Top with remaining sauce and cheese.',
@@ -266,12 +223,10 @@ export const recipes: { [recipeName: string]: Recipe } = {
         ingredients: {
             pasta: '2 cups uncooked {0}',
             flour: '2 tablespoons all-purpose {0}',
-        },
-        otherIngredients: {
-            cream: '1-1/2 cups half-and-half {0}',
             cheese: '3/4 pound process {0}',
             butter: '2 tablespoons {0}',
         },
+        otherIngredients: { cream: '1-1/2 cups half-and-half {0}' },
         instructions: [
             'Cook pasta according to package directions; drain.',
             'Meanwhile, in a large cast-iron or other heavy skillet, melt butter over medium heat. Stir in flour until smooth; gradually whisk in cream. Bring to a boil, stirring constantly. Cook and stir until thickened, about 2 minutes. Reduce heat; stir in cheese until melted.',
