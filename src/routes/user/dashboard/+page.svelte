@@ -30,14 +30,11 @@
         return r.includes(pickedName);
     }
 
-    function randomIndex() {
-        if (!enough || enough.length == 0) return -1;
-        return Math.floor(Math.random() * enough.length);
-    }
     $: pickedIndex = Math.floor(Math.random() * enough.length);
     $: {
-        if (!validate(enough) && enough.length > 0 && pickedIndex >= 0) {
-            pickedName = enough[pickedIndex];
+        if (!validate(enough)) {
+            if (enough.length > 0) pickedName = enough[pickedIndex];
+            else pickedName = '';
         }
     }
     $: pickedRecipe = recipes[pickedName];
@@ -54,7 +51,7 @@
         const prevName = pickedName;
         let newName = pickedName;
         while (newName == prevName) {
-            newName = enough[randomIndex()];
+            newName = enough[Math.floor(Math.random() * enough.length)];
         }
         pickedName = newName;
     }
@@ -138,35 +135,6 @@
                     </div>
                 </div>
             </section>
-            <!-- <div class=" w-full"><h1 class=" text-center text-5xl">Recipe of the Day</h1></div>
-        <div class=" w-full">
-            <div class="card flex overflow-hidden p-4 text-sm max-sm:flex-col">
-                <div class="relative flex-none overflow-hidden sm:order-last sm:w-[30%]">
-                    <img alt={pickedName} src={pickedRecipe?.imgUrl} />
-                </div>
-                <div class="flex flex-col gap-4 px-5">
-                    <div class="text-center text-3xl">
-                        {pickedName}
-                    </div>
-                    <div>
-                        {pickedRecipe?.ingredients}
-                    </div>
-                    <hr />
-                    <div>
-                        <p class="text-xl">Instructions</p>
-                        <ol class="list">
-                            {#if pickedRecipe}
-                                {#each Object.entries(pickedRecipe.instructions) as [id, instruction]}
-                                    <li>
-                                        <span>{Number(id) + 1}. {instruction}</span>
-                                    </li>
-                                {/each}
-                            {/if}
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </div> -->
         {/key}
     {:else}
         <div class="mx-auto max-w-screen-xl px-4 py-8 text-center lg:py-16">
@@ -185,21 +153,6 @@
                 >
                     Add ingredients
                     <Icon src={ArrowRight} class="relative ms-2 h-3.5 w-3.5 stroke-2" />
-                    <!-- <svg
-                        class="ms-2 h-3.5 w-3.5 rtl:rotate-180"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 14 10"
-                    >
-                        <path
-                            stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M1 5h12m0 0L9 1m4 4L9 9"
-                        />
-                    </svg> -->
                 </a>
             </div>
         </div>
