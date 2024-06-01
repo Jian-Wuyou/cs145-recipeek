@@ -24,8 +24,19 @@
     }
 
     $: enough = Object.keys(filtered).filter(name => filtered[name] == 0);
+
+    let pickedName: string;
+    function validate(r: typeof enough) {
+        return r.includes(pickedName);
+    }
+
     $: pickedIndex = Math.floor(Math.random() * enough.length);
-    $: pickedRecipe = recipes[enough[pickedIndex]];
+    $: {
+        if (!validate(enough)) {
+            pickedName = enough[pickedIndex];
+        }
+    }
+    $: pickedRecipe = recipes[pickedName];
 
     function refreshSelection() {
         if (enough.length <= 1) {
@@ -47,7 +58,7 @@
 
 <div class="flex h-dvh w-full flex-col gap-5 max-sm:p-4 sm:p-6 md:p-12">
     {#if enough.length > 0}
-        {#key enough[pickedIndex]}
+        {#key pickedName}
             <section in:fly={{ y: 200, duration: 2000 }} out:fade>
                 <div
                     class="relative mx-auto grid max-h-[75dvh] max-w-screen-xl max-lg:overflow-y-auto lg:grid-cols-12 lg:gap-8 xl:gap-0"
@@ -59,7 +70,7 @@
                             class="mb-4 w-full max-w-2xl pt-2 text-center text-2xl font-extrabold leading-none tracking-tight dark:text-white max-lg:relative md:text-4xl"
                         >
                             <span class="pr-4">
-                                {enough[pickedIndex]}
+                                {pickedName}
                             </span>
                             <button
                                 type="button"
@@ -114,7 +125,7 @@
                     <div
                         class="m-auto overflow-hidden max-lg:order-1 max-lg:max-h-[200px] lg:order-2 lg:col-span-4 lg:mt-0 lg:flex"
                     >
-                        <img alt={enough[pickedIndex]} src={pickedRecipe?.imgUrl} />
+                        <img alt={pickedName} src={pickedRecipe?.imgUrl} />
                     </div>
                 </div>
             </section>
@@ -122,11 +133,11 @@
         <div class=" w-full">
             <div class="card flex overflow-hidden p-4 text-sm max-sm:flex-col">
                 <div class="relative flex-none overflow-hidden sm:order-last sm:w-[30%]">
-                    <img alt={enough[pickedIndex]} src={pickedRecipe?.imgUrl} />
+                    <img alt={pickedName} src={pickedRecipe?.imgUrl} />
                 </div>
                 <div class="flex flex-col gap-4 px-5">
                     <div class="text-center text-3xl">
-                        {enough[pickedIndex]}
+                        {pickedName}
                     </div>
                     <div>
                         {pickedRecipe?.ingredients}
