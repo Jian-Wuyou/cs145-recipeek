@@ -3,9 +3,10 @@
     import { recipes } from '$lib/data/recipes';
     import { getPantryStore } from '$lib/store/userContext';
     import { Icon } from '@steeze-ui/svelte-icon';
-    import { MoveRight } from '@steeze-ui/lucide-icons';
+    import { MoveRight, RotateCw } from '@steeze-ui/lucide-icons';
 
     import { ArrowRight } from '@steeze-ui/heroicons';
+    import { pick } from 'valibot';
 
     const pantryStore = getPantryStore();
 
@@ -25,6 +26,18 @@
     $: enough = Object.keys(filtered).filter(name => filtered[name] == 0);
     $: pickedIndex = Math.floor(Math.random() * enough.length);
     $: pickedRecipe = recipes[enough[pickedIndex]];
+
+    function refreshSelection() {
+        if (enough.length <= 1) {
+            return 0;
+        }
+        const prevIndex = pickedIndex;
+        let newIndex = pickedIndex;
+        while (newIndex == prevIndex) {
+            newIndex = Math.floor(Math.random() * enough.length);
+        }
+        pickedIndex = newIndex;
+    }
 </script>
 
 <div class="flex h-dvh w-full flex-col gap-5 max-sm:p-4 sm:p-6 md:p-12">
@@ -32,15 +45,22 @@
         {#key enough[pickedIndex]}
             <section in:fly={{ y: 200, duration: 2000 }} out:fade>
                 <div
-                    class="mx-auto grid max-h-[75dvh] max-w-screen-xl max-lg:overflow-y-auto lg:grid-cols-12 lg:gap-8 xl:gap-0"
+                    class="relative mx-auto grid max-h-[75dvh] max-w-screen-xl max-lg:overflow-y-auto lg:grid-cols-12 lg:gap-8 xl:gap-0"
                 >
                     <div
                         class="flex w-full flex-col items-center place-self-center max-lg:order-2 lg:order-1 lg:col-span-8"
                     >
                         <h1
-                            class="mb-4 w-full max-w-2xl text-center text-2xl font-extrabold leading-none tracking-tight dark:text-white md:text-4xl"
+                            class="mb-4 w-full max-w-2xl pt-2 text-center text-2xl font-extrabold leading-none tracking-tight dark:text-white max-lg:relative md:text-4xl"
                         >
-                            {enough[pickedIndex]}
+                            <span class="pr-4">
+                                {enough[pickedIndex]}
+                            </span>
+                            <button
+                                type="button"
+                                class="btn-icon bg-surface-200-700-token max-lg:inline max-lg:translate-y-2 lg:absolute lg:-right-[21.5px] lg:-top-[21.5px]"
+                                on:click={refreshSelection}><Icon src={RotateCw} class="m-auto w-7" /></button
+                            >
                         </h1>
                         <div class="flex h-[65dvh] max-md:flex-col max-md:divide-y-[1px] md:flex-row md:divide-x-[1px]">
                             <div class="max-lg:w-full max-lg:pb-4 lg:h-full lg:w-[40%]">
