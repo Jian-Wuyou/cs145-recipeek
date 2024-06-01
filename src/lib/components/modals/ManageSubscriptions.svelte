@@ -56,7 +56,7 @@
         <header class={cHeader}>{$modalStore[0].title ?? '(title missing)'}</header>
         <article>{$modalStore[0].body ?? '(body missing)'}</article>
         <div class="table-container">
-            <table class="table table-compact table-fixed">
+            <table class="table-compact table table-fixed">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -70,7 +70,7 @@
                                 <td>{id}</td>
                                 <td
                                     ><button
-                                        class="rounded-lg bg-red-500 p-1.5 hover:bg-red-700"
+                                        class="rounded-lg bg-red-500 p-1.5 text-white hover:bg-red-700"
                                         on:click={() => {
                                             subscriptions[id] = false;
                                         }}
@@ -85,7 +85,7 @@
                         <td class="overflow-hidden">
                             {#if visible}
                                 <button
-                                    class="rounded-lg bg-green-500 p-1.5 hover:bg-green-700"
+                                    class="rounded-lg bg-green-500 p-1.5 text-white hover:bg-green-700"
                                     on:click={() => {
                                         inputID = 0;
                                         visible = false;
@@ -99,11 +99,14 @@
                         </td>
                         <td>
                             {#if !visible}
-                                <button class="rounded-lg bg-green-500 p-1.5 hover:bg-green-700" on:click={addID}>
+                                <button
+                                    class="rounded-lg bg-green-500 p-1.5 text-white hover:bg-green-700"
+                                    on:click={addID}
+                                >
                                     <Icon class="w-5 stroke-2" src={Check} />
                                 </button>
                                 <button
-                                    class="rounded-lg bg-red-500 p-1.5 hover:bg-red-700"
+                                    class="rounded-lg bg-red-500 p-1.5 text-white hover:bg-red-700"
                                     on:click={() => {
                                         visible = true;
                                     }}

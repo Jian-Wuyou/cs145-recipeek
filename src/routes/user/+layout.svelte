@@ -95,7 +95,7 @@
             <svelte:fragment>
                 <a href="/user/notifications">
                     <div class="relative inline-block">
-                        <button class="hover:text-surface-100">
+                        <button class="hover:text-primary-700">
                             {#if Object.keys($notificationStore).length > 0}
                                 {@const displayValue =
                                     Object.keys($notificationStore).length > 9
