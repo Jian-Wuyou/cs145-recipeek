@@ -6,7 +6,7 @@
         type PopupSettings,
         popup,
     } from '@skeletonlabs/skeleton';
-    import { ingredients } from '$lib/data/ingredients';
+    import { ingredients2 } from '$lib/data/ingredients';
 
     export const parent: any = null;
 
@@ -18,7 +18,6 @@
         itemName: '',
         amount: fixedAmount ? fixedAmount : 0,
     };
-    console.log(formData);
 
     function onFormSubmit() {
         if ($modalStore[0].response) {
@@ -32,11 +31,11 @@
     }
 
     const ingredientOptions: AutocompleteOption<string>[] = [];
-    for (const [item, keyw] of Object.entries(ingredients)) {
+    for (const [item, { category }] of Object.entries(ingredients2)) {
         ingredientOptions.push({
             label: item,
             value: item,
-            keywords: keyw.join(),
+            keywords: category.join(),
         });
     }
 
@@ -70,7 +69,7 @@
                     <div class="card relative z-50 max-h-48 w-full max-w-sm overflow-y-auto p-4" tabindex="-1">
                         <Autocomplete
                             bind:input={formData.itemName}
-                            allowlist={Object.keys(ingredients)}
+                            allowlist={Object.keys(ingredients2)}
                             options={ingredientOptions}
                             on:selection={onSelection}
                         />

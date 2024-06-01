@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { ingredients } from '$lib/data/ingredients';
+    import { ingredients2 } from '$lib/data/ingredients';
     import { getNotificationStore } from '$lib/store/userContext';
     import { getModalStore } from '@skeletonlabs/skeleton';
     import { PencilLine, Trash2 } from '@steeze-ui/lucide-icons';
@@ -22,7 +22,7 @@
             body: '',
             response: (r: { itemName: string; amount: number }) => {
                 if (!r) return;
-                if (!ingredients.hasOwnProperty(r.itemName)) return;
+                if (!ingredients2.hasOwnProperty(r.itemName)) return;
                 notificationStore.confirm(notifId, r.itemName);
             },
         });
@@ -30,7 +30,7 @@
 </script>
 
 <div class="table-container block h-[80dvh] w-full">
-    <table class="table table-hover table-compact overflow-y-scroll">
+    <table class="table-hover table-compact table overflow-y-scroll">
         <thead>
             <tr>
                 <th colspan="2">Notifications</th>
@@ -46,13 +46,13 @@
                     </td>
                     <td>
                         <button
-                            class="rounded-lg bg-green-500 p-1.5 hover:bg-green-700"
+                            class="rounded-lg bg-green-500 p-1.5 text-white hover:bg-green-700"
                             on:click={() => modalAddItem(notifId, amount)}
                         >
                             <Icon class="w-5 stroke-2" src={PencilLine} />
                         </button>
                         <button
-                            class="rounded-lg bg-red-500 p-1.5 hover:bg-red-700"
+                            class="rounded-lg bg-red-500 p-1.5 text-white hover:bg-red-700"
                             on:click={() => notificationStore.dismiss(notifId)}
                         >
                             <Icon class="w-5 stroke-2" src={Trash2} />

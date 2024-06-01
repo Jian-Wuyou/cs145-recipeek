@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { fade, fly } from 'svelte/transition';
     import { recipes } from '$lib/data/recipes';
     import { getPantryStore } from '$lib/store/userContext';
     import { Icon } from '@steeze-ui/svelte-icon';
@@ -26,12 +27,59 @@
     $: pickedRecipe = recipes[enough[pickedIndex]];
 </script>
 
-<div class="flex h-dvh w-full flex-col gap-5 p-12">
+<div class="flex h-dvh w-full flex-col gap-5 max-sm:p-4 sm:p-6 md:p-12">
     {#if enough.length > 0}
-        <div class=" w-full"><h1 class=" text-center text-5xl">Recipe of the Day</h1></div>
+        {#key enough[pickedIndex]}
+            <section in:fly={{ y: 200, duration: 2000 }} out:fade>
+                <div
+                    class="mx-auto grid max-h-[75dvh] max-w-screen-xl max-lg:overflow-y-auto lg:grid-cols-12 lg:gap-8 xl:gap-0"
+                >
+                    <div
+                        class="flex w-full flex-col items-center place-self-center max-lg:order-2 lg:order-1 lg:col-span-8"
+                    >
+                        <h1
+                            class="mb-4 w-full max-w-2xl text-center text-2xl font-extrabold leading-none tracking-tight dark:text-white md:text-4xl"
+                        >
+                            {enough[pickedIndex]}
+                        </h1>
+                        <div class="flex h-[65dvh] max-md:flex-col max-md:divide-y-[1px] md:flex-row md:divide-x-[1px]">
+                            <div class="max-lg:w-full max-lg:pb-4 lg:h-full lg:w-[40%]">
+                                <h4 class="w-full pb-4 text-center text-xl font-bold">Ingredients</h4>
+                                <ul class="list-inside list-disc">
+                                    {#each Object.entries(pickedRecipe?.ingredients) as [name, fmt] (name)}
+                                        <li>{fmt.replace(/\{0\}/, name)}</li>
+                                    {/each}
+                                </ul>
+                            </div>
+                            <div class="max-lg:w-full max-lg:pt-4 sm:pl-4 lg:h-full lg:w-[60%] lg:overflow-y-auto">
+                                <h4 class="w-full pb-4 text-center text-xl font-bold">Instructions</h4>
+                                <ol class="list">
+                                    {#each Object.entries(pickedRecipe?.instructions) as [idx, instruction]}
+                                        {#if idx != '0'}
+                                            <div class="px-12 py-2">
+                                                <hr class="divider border-t-[0.5px]" />
+                                            </div>
+                                        {/if}
+                                        <li>
+                                            <span class="badge-icon variant-soft-primary p-3">{Number(idx) + 1}</span>
+                                            <span class="flex-auto">{instruction}</span>
+                                        </li>
+                                    {/each}
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="m-auto overflow-hidden max-lg:order-1 max-lg:max-h-[200px] lg:order-2 lg:col-span-4 lg:mt-0 lg:flex"
+                    >
+                        <img alt={enough[pickedIndex]} src={pickedRecipe?.imgUrl} />
+                    </div>
+                </div>
+            </section>
+            <!-- <div class=" w-full"><h1 class=" text-center text-5xl">Recipe of the Day</h1></div>
         <div class=" w-full">
-            <div class="card flex overflow-hidden p-4 text-sm">
-                <div class="relative w-[30%] flex-none overflow-hidden">
+            <div class="card flex overflow-hidden p-4 text-sm max-sm:flex-col">
+                <div class="relative flex-none overflow-hidden sm:order-last sm:w-[30%]">
                     <img alt={enough[pickedIndex]} src={pickedRecipe?.imgUrl} />
                 </div>
                 <div class="flex flex-col gap-4 px-5">
@@ -56,7 +104,8 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
+        {/key}
     {:else}
         <div class="mx-auto max-w-screen-xl px-4 py-8 text-center lg:py-16">
             <h1

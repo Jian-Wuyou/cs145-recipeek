@@ -26,8 +26,15 @@ export type Recipe = {
     keywords: string;
     alias: string;
     ingredients: {
-        [ingredientName: string]: number;
+        [ingredientName: string]: string;
+    };
+    otherIngredients?: {
+        [ingredientName: string]: string;
     };
     instructions: string[];
     imgUrl: string;
+};
+
+export type RecipeList = {
+    [recipeName: string]: Recipe;
 };

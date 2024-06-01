@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { ingredients, ingredientsCategory } from '$lib/data/ingredients';
+    import { ingredients2, ingredientsCategory } from '$lib/data/ingredients';
     import { auth, db } from '$lib/firebase/firebase.client';
     import { error } from '$lib/functions/toast';
     import type { Stock } from '$lib/models';
@@ -71,7 +71,7 @@
     };
 
     const verifyIngredient = (itemName: string) => {
-        const valid = ingredients.hasOwnProperty(itemName);
+        const valid = ingredients2.hasOwnProperty(itemName);
         if (!valid) {
             toastStore.trigger(error('Invalid ingredient'));
         }
@@ -160,7 +160,7 @@
     </div>
 </div>
 <div class="table-container block h-[65dvh] w-full">
-    <table class="table table-hover table-compact w-full overflow-y-scroll">
+    <table class="table-hover table-compact table w-full overflow-y-scroll">
         <thead class="sticky top-0">
             <tr>
                 <th>Ingredient Name</th>
