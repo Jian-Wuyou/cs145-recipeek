@@ -1,11 +1,13 @@
 <!-- YOU CAN DELETE EVERYTHING IN THIS PAGE -->
 <script lang="ts">
     import { NavBar } from '$lib/components';
+    import { LightSwitch } from '@skeletonlabs/skeleton';
 </script>
 
 <div class="flex h-full flex-wrap">
     <div class="h-min basis-full">
         <NavBar>
+            <LightSwitch />
             <a href="/auth/login"><button class="variant-filled btn flex w-32 text-center">Login</button></a>
         </NavBar>
     </div>

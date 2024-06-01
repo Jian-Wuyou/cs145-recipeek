@@ -7,7 +7,7 @@
     $: url = $sessionStore.loggedIn ? '/user/dashboard' : '/';
 </script>
 
-<AppBar shadow="shadow-md" padding="p-0">
+<AppBar shadow="shadow-md" padding="py-0 pl-0 pr-3">
     <svelte:fragment slot="lead">
         <div class="flex auto-rows-fr">
             <a href={url}>
