@@ -25,29 +25,38 @@
 
     $: enough = Object.keys(filtered).filter(name => filtered[name] == 0);
 
-    let pickedName: string;
+    let pickedName: string = '';
     function validate(r: typeof enough) {
         return r.includes(pickedName);
     }
 
+    function randomIndex() {
+        if (!enough || enough.length == 0) return -1;
+        return Math.floor(Math.random() * enough.length);
+    }
     $: pickedIndex = Math.floor(Math.random() * enough.length);
     $: {
-        if (!validate(enough)) {
+        if (!validate(enough) && enough.length > 0 && pickedIndex >= 0) {
             pickedName = enough[pickedIndex];
         }
     }
     $: pickedRecipe = recipes[pickedName];
 
     function refreshSelection() {
-        if (enough.length <= 1) {
-            return 0;
+        if (!enough || enough.length <= 0) {
+            pickedName = '';
+            return;
         }
-        const prevIndex = pickedIndex;
-        let newIndex = pickedIndex;
-        while (newIndex == prevIndex) {
-            newIndex = Math.floor(Math.random() * enough.length);
+        if (enough.length == 1) {
+            pickedName = enough[0];
+            return;
         }
-        pickedIndex = newIndex;
+        const prevName = pickedName;
+        let newName = pickedName;
+        while (newName == prevName) {
+            newName = enough[randomIndex()];
+        }
+        pickedName = newName;
     }
     const popupHover: PopupSettings = {
         event: 'hover',
@@ -57,7 +66,7 @@
 </script>
 
 <div class="flex h-dvh w-full flex-col gap-5 max-sm:p-4 sm:p-6 md:p-12">
-    {#if enough.length > 0}
+    {#if enough.length > 0 && pickedName != ''}
         {#key pickedName}
             <section in:fly={{ y: 200, duration: 2000 }} out:fade>
                 <div
