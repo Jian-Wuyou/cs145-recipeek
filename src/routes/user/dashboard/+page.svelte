@@ -4,9 +4,9 @@
     import { getPantryStore } from '$lib/store/userContext';
     import { Icon } from '@steeze-ui/svelte-icon';
     import { MoveRight, RotateCw } from '@steeze-ui/lucide-icons';
+    import { type PopupSettings, popup } from '@skeletonlabs/skeleton';
 
     import { ArrowRight } from '@steeze-ui/heroicons';
-    import { pick } from 'valibot';
 
     const pantryStore = getPantryStore();
 
@@ -38,6 +38,11 @@
         }
         pickedIndex = newIndex;
     }
+    const popupHover: PopupSettings = {
+        event: 'hover',
+        target: 'popupHover',
+        placement: 'bottom',
+    };
 </script>
 
 <div class="flex h-dvh w-full flex-col gap-5 max-sm:p-4 sm:p-6 md:p-12">
@@ -70,6 +75,23 @@
                                         <li>{fmt.replace(/\{0\}/, name)}</li>
                                     {/each}
                                 </ul>
+                                {#if Object.keys(pickedRecipe?.otherIngredients ?? {}).length > 0}
+                                    <div class="px-12 py-2">
+                                        <hr class="divider border-t-[0.5px]" />
+                                    </div>
+                                    <ul class="list-inside list-disc [&>*]:pointer-events-none" use:popup={popupHover}>
+                                        {#each Object.entries(pickedRecipe?.otherIngredients ?? {}) as [name, fmt] (name)}
+                                            <li>{fmt.replace(/\{0\}/, name)}</li>
+                                        {/each}
+                                    </ul>
+                                    <div
+                                        class="bg-warning-200-700-token rounded-md p-1 text-sm"
+                                        data-popup="popupHover"
+                                    >
+                                        <p>Untracked ingredients</p>
+                                        <div class="arrow bg-warning-200-700-token" />
+                                    </div>
+                                {/if}
                             </div>
                             <div class="max-lg:w-full max-lg:pt-4 sm:pl-4 lg:h-full lg:w-[60%] lg:overflow-y-auto">
                                 <h4 class="w-full pb-4 text-center text-xl font-bold">Instructions</h4>

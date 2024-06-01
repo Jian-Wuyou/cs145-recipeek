@@ -50,7 +50,7 @@ export const recipes: { [recipeName: string]: Recipe } = {
     'Salt Potatoes': {
         keywords: 'potato, gluten free',
         alias: 'boiled potato, salt potato',
-        ingredients: { potato: '4 {0}es', butter: '1 stickk {0}' },
+        ingredients: { potato: '4 {0}es', butter: '1 stick {0}' },
         instructions: [
             'Put the potatoes, 8 cups water and the salt in a large pot. Cover and bring to a boil over high heat, then reduce the heat to medium and simmer until the potatoes are fork-tender, about 30 minutes.',
             'Drain the potatoes in a colander and shake to remove excess water. Let the skins dry in the colander so that some of the salt crystallizes.',
