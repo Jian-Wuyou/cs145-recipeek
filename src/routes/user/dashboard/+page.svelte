@@ -4,7 +4,7 @@
     import { popup, type PopupSettings } from '@skeletonlabs/skeleton';
     import { RotateCw } from '@steeze-ui/lucide-icons';
     import { Icon } from '@steeze-ui/svelte-icon';
-    import { fade, fly, slide } from 'svelte/transition';
+    import { fade, fly } from 'svelte/transition';
 
     import { ArrowRight } from '@steeze-ui/heroicons';
 
@@ -145,7 +145,7 @@
                 </section>
             {/key}
         </div>
-    {:else}
+    {:else if pantryStore.isLoaded()}
         <div class="container" in:fade|local={{ duration: 1500 }}>
             <div class="mx-auto max-w-screen-xl px-4 py-8 text-center lg:py-16">
                 <h1

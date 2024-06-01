@@ -8,6 +8,7 @@ export function initStore() {
     const pantryStore = writable<Stock>({});
     const { subscribe, update, set } = pantryStore;
 
+    let loaded = false;
     const user = auth.currentUser;
     const inventoryRef = ref(db, `users/${user?.uid}/inventory`);
     onValue(inventoryRef, snapshot => {
@@ -21,6 +22,7 @@ export function initStore() {
             };
         }
         set(snapshotStock);
+        loaded = true;
     });
 
     const add = (itemName: string, amount: number) => {
@@ -52,12 +54,17 @@ export function initStore() {
         dbRemove(child(inventoryRef, itemName));
     };
 
+    function isLoaded() {
+        return loaded;
+    }
+
     return {
         subscribe,
         add,
         edit,
         remove,
         set,
+        isLoaded,
     };
 }
 
