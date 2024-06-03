@@ -1,38 +1,21 @@
-# create-svelte
+# ReciPeek
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+No more "What's for dinner?"
 
-## Creating a project
+With ReciPeek, you can easily find recipes that can be made with whatever you have on hand!
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Installation
 
+To run the project, simply clone the repository and run
 ```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
+npm install
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+## Development
 
-To create a production version of your app:
+Recipes and ingredients can easily be added by modifying the `ingredients.ts` and `recipes.ts` files found in the `src/lib/data` path.
 
-```bash
-npm run build
-```
+---
 
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+This is a course requirements for CS145 Computer Networks course of the Department of Computer Science, College of Engineering, University of the Philippines - Diliman, AY 2023-2024.
